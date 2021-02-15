@@ -5,14 +5,14 @@ import (
 	"os"
 )
 
-type DefaultResponse struct {
+type defaultResponse struct {
 	Message     string `json:"message"`
 	Status      string `json:"status"`
 	RateLimiter string `json:"rate_limiter"`
 }
 
 func DefaultController(c *fiber.Ctx) error {
-	return c.JSON(DefaultResponse{
+	return c.JSON(defaultResponse{
 		"crypto-service is running...",
 		"ok",
 		os.Getenv("RATE_LIMITER"),

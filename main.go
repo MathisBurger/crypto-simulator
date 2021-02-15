@@ -40,7 +40,8 @@ func main() {
 		},
 	}))
 
-	app.Get("/", controller.DefaultController)
+	app.Get("/api", controller.DefaultController)
+	app.Post("/api/register", controller.RegisterController)
 
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {
