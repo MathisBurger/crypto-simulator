@@ -24,3 +24,15 @@ func GenerateUUID() string {
 	}
 	return output.String()
 }
+
+func GenerateToken() string {
+	rand.Seed(time.Now().Unix())
+	charSet := "abcdefghijklmnopqrstuvwxyz"
+	var output = strings.Builder{}
+	for i := 0; i < 128; i++ {
+		random := rand.Intn(len(charSet))
+		randomChar := charSet[random]
+		output.WriteString(string(randomChar))
+	}
+	return output.String()
+}

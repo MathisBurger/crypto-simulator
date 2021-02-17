@@ -2,13 +2,16 @@ package utils
 
 import (
 	"crypto/sha512"
-	"encoding/base64"
+	"encoding/hex"
 	"math/rand"
 )
 
 func HashPassword(pwd string) string {
 	salt := generateSalt()
 	hash := hashPassword(pwd, salt)
+	for i := 0; i < 6; i++ {
+		hash = hashPassword(hash, salt)
+	}
 	return hash
 
 }
@@ -28,15 +31,17 @@ func hashPassword(password string, salt []byte) string {
 	passwordBytes = append(passwordBytes, salt...)
 	sha512Hasher.Write(passwordBytes)
 	var hashedPasswordBytes = sha512Hasher.Sum(nil)
-	var base64EncodedPasswordHash = base64.URLEncoding.EncodeToString(hashedPasswordBytes)
-	var encodedSalt = base64.URLEncoding.EncodeToString(salt)
-
+	var base64EncodedPasswordHash = hex.EncodeToString(hashedPasswordBytes)
+	var encodedSalt = hex.EncodeToString(salt)
 	return encodedSalt + "$" + base64EncodedPasswordHash
 }
 
-func doPasswordsMatch(hashedPassword, currPassword string,
-	salt []byte) bool {
-	var currPasswordHash = hashPassword(currPassword, salt)
-
+func DoPasswordsMatch(hashedPassword, currPassword string,
+	salt string) bool {
+	slt, _ := hex.DecodeString(salt)
+	currPasswordHash := hashPassword(currPassword, slt)
+	for i := 0; i < 6; i++ {
+		currPasswordHash = hashPassword(currPasswordHash, slt)
+	}
 	return hashedPassword == currPasswordHash
 }

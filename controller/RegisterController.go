@@ -2,7 +2,7 @@ package controller
 
 import (
 	"encoding/json"
-	"github.com/MathisBurger/crypto-simulator/database"
+	"github.com/MathisBurger/crypto-simulator/database/actions"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -12,7 +12,7 @@ type registerRequest struct {
 }
 
 type registerResponse struct {
-	Status  string `json:"status"`
+	Status  bool   `json:"status"`
 	Message string `json:"message"`
 }
 
@@ -22,24 +22,24 @@ func RegisterController(c *fiber.Ctx) error {
 	err := json.Unmarshal([]byte(raw), &obj)
 	if err != nil {
 		return c.JSON(registerResponse{
-			"failed",
-			"wrong json body",
+			false,
+			"Invalid JSON body",
 		})
 	}
 	if !checkRegisterRequest(obj) {
 		return c.JSON(registerResponse{
-			"failed",
-			"wrong json body",
+			false,
+			"Invalid JSON body",
 		})
 	}
-	if database.CreateAccount(obj.Username, obj.Password) {
+	if actions.RegisterAccount(obj.Username, obj.Password) {
 		return c.JSON(registerResponse{
-			"ok",
+			true,
 			"Successfully created account",
 		})
 	} else {
 		return c.JSON(registerResponse{
-			"failed",
+			false,
 			"failed to create an account",
 		})
 	}

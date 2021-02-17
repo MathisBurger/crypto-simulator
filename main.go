@@ -2,7 +2,7 @@ package main
 
 import (
 	"github.com/MathisBurger/crypto-simulator/controller"
-	"github.com/MathisBurger/crypto-simulator/database"
+	"github.com/MathisBurger/crypto-simulator/database/actions"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
@@ -17,8 +17,7 @@ func main() {
 	if err != nil {
 		panic(err.Error())
 	}
-
-	database.CreateRequiredTables()
+	actions.InitTables()
 
 	app := fiber.New(fiber.Config{
 		Prefork: true,
@@ -42,6 +41,7 @@ func main() {
 
 	app.Get("/api", controller.DefaultController)
 	app.Post("/api/register", controller.RegisterController)
+	app.Post("/api/login", controller.LoginController)
 
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {

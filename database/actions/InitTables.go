@@ -1,7 +1,10 @@
 package actions
 
 func InitTables() {
-	conn, _ := connect()
+	conn, err := connect()
+	if err != nil {
+		panic(err.Error())
+	}
 	stmt, err := conn.Prepare("CREATE TABLE `user` ( `ID` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(64) NOT NULL , `password` TEXT NOT NULL , `walletUUID` VARCHAR(32)NOT NULL , `AuthToken` VARCHAR(128) NOT NULL , `created-at` BIGINT NOT NULL , PRIMARY KEY (`ID`));")
 	if err != nil {
 		panic(err.Error())
