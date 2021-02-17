@@ -42,6 +42,7 @@ func main() {
 	app.Get("/api", controller.DefaultController)
 	app.Post("/api/register", controller.RegisterController)
 	app.Post("/api/login", controller.LoginController)
+	app.Get("/api/checkBalance", controller.CheckBalanceController)
 
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {
