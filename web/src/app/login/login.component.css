@@ -1,0 +1,92 @@
+.login-card {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+  transition: 0.3s;
+  width: 50%;
+  position: absolute;
+  left: 25%;
+  top: 25%;
+  height: 45%;
+  background-color: white;
+  color: black;
+  border-radius: 25px;
+}
+
+.login-card:hover {
+  box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+}
+
+.login-card-container {
+  padding: 2px 16px;
+}
+
+.heading {
+  text-align: center;
+  font-weight: bold;
+  font-size: 3em;
+  font-family: "Arial", Times, serif;
+}
+
+.form-container {
+  overflow: hidden;
+}
+
+input {
+  height: 50px;
+  width: 80%;
+  position: absolute;
+  left: 10%;
+  border-radius: 10px;
+  border: 3px solid #B4B4B4;
+  text-align: center;
+  font-size: 1.5em;
+  font-family: Arial, Times, serif;
+
+}
+
+input::placeholder {
+  font-weight: bold;
+}
+
+input:focus {
+  border: 3px solid #289EDD;
+  outline: none;
+}
+
+.password-top-margin {
+  margin-top: 4em;
+}
+
+button {
+  position: absolute;
+  left: 35%;
+  width: 30%;
+  margin-top: 12em;
+  height: 4em;
+  border-radius: 10px;
+  background: #0f86ec;
+  border: 3px solid #0179de;
+  outline: none;
+  font-family: "Arial", Times, serif;
+  font-size: 1em;
+  font-weight: bold;
+}
+
+@media only screen and (max-width: 680px) {
+    .login-card {
+      box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+      transition: 0.3s;
+      width: 90%;
+      position: absolute;
+      left: 5%;
+      top: 25%;
+      height: 45%;
+      background-color: white;
+      color: black;
+      border-radius: 25px;
+    }
+    button {
+      width: 40%;
+      left: 30%;
+      margin-top: 10.2em;
+    }
+}
