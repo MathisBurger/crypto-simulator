@@ -60,14 +60,14 @@ button {
   position: absolute;
   left: 35%;
   width: 30%;
-  margin-top: 12em;
-  height: 4em;
+  margin-top: 7.5em;
+  height: 3em;
   border-radius: 10px;
   background: #0f86ec;
   border: 3px solid #0179de;
   outline: none;
   font-family: "Arial", Times, serif;
-  font-size: 1em;
+  font-size: 1.5em;
   font-weight: bold;
 }
 
@@ -87,6 +87,6 @@ button {
     button {
       width: 40%;
       left: 30%;
-      margin-top: 10.2em;
+      margin-top: 6.8em;
     }
 }
