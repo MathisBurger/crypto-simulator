@@ -18,6 +18,7 @@ func CurrencyUpdater() {
 						actions.InsertCurrency(el.Symbol, price, obj.Timestamp)
 					}
 					actions.UpdateCurrency(el.Symbol, price, obj.Timestamp)
+					actions.InsertCurrencyChange(el.Symbol, price, obj.Timestamp)
 				} else {
 					break
 				}
