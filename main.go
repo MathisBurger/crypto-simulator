@@ -3,6 +3,7 @@ package main
 import (
 	"github.com/MathisBurger/crypto-simulator/controller"
 	"github.com/MathisBurger/crypto-simulator/database/actions"
+	"github.com/MathisBurger/crypto-simulator/services"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
@@ -20,7 +21,7 @@ func main() {
 	actions.InitTables()
 
 	app := fiber.New(fiber.Config{
-		Prefork: true,
+		Prefork: false,
 	})
 
 	app.Use(logger.New())
@@ -43,7 +44,7 @@ func main() {
 	app.Post("/api/register", controller.RegisterController)
 	app.Post("/api/login", controller.LoginController)
 	app.Get("/api/checkBalance", controller.CheckBalanceController)
-
+	go services.CurrencyUpdater()
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {
 		panic(err.Error())
