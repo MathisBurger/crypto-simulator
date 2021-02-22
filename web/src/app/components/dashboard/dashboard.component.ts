@@ -37,6 +37,7 @@ export class DashboardComponent implements OnInit {
     });
     this.api.getAllCurrencys().subscribe(data => {
       if (data.status) {
+          console.log(data.data);
           this.currencys = data.data;
       } else {
         this.popup.showAsComponent(data.message, '#d41717');
