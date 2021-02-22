@@ -14,9 +14,11 @@ h1, h2, h3, h4, h5, h6, p, td {
   color: white;
   font-family: "Arial", Times, serif;
 }
+
 td {
   font-weight: bold;
 }
+
 tr.space-under>td {
   padding-bottom: 0.5em;
   padding-top: 0.5em;
@@ -42,7 +44,6 @@ table {
 ::-webkit-scrollbar {
   background: transparent;
 }
-
 
 .card-heading {
   text-align: center;
@@ -74,5 +75,9 @@ table {
 
 .currency-container-element {
   width: 35%;
+}
 
+.balance-card {
+  position: relative;
+  
 }

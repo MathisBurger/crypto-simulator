@@ -2,7 +2,6 @@ package services
 
 import (
 	"encoding/json"
-	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -28,7 +27,7 @@ type AllCurrencysResponse struct {
 	Timestamp int              `json:"timestamp"`
 }
 
-func GetAllCurrencys() AllCurrencysResponse {
+func GetAllCurrencys() (bool, AllCurrencysResponse) {
 	url := "https://api.coincap.io/v2/assets"
 	httpClient := http.Client{Timeout: time.Second * 2}
 	req, _ := http.NewRequest(http.MethodGet, url, nil)
@@ -43,9 +42,7 @@ func GetAllCurrencys() AllCurrencysResponse {
 	obj := AllCurrencysResponse{}
 	err = json.Unmarshal(body, &obj)
 	if err != nil {
-		fmt.Println("resp code:", res.StatusCode)
-		fmt.Println("response:", string(body))
-		panic(err.Error())
+		return false, AllCurrencysResponse{}
 	}
-	return obj
+	return true, obj
 }
