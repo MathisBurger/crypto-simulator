@@ -9,6 +9,7 @@ import {FormsModule} from '@angular/forms';
 import {HttpClientModule} from '@angular/common/http';
 import {APIService} from './services/api.service';
 import { AlertWindowComponent } from './includes/alert-window/alert-window.component';
+import { NavbarComponent } from './includes/navbar/navbar.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
@@ -23,7 +24,8 @@ const routes: Routes = [
     LoginComponent,
     DashboardComponent,
     RegisterComponent,
-    AlertWindowComponent
+    AlertWindowComponent,
+    NavbarComponent
   ],
   imports: [
     BrowserModule,

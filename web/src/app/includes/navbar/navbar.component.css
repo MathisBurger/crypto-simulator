@@ -1,0 +1,56 @@
+.navbar {
+  width: 100vw;
+  height: 7%;
+  background: #2B2B2B;
+  position: fixed;
+  top: 0;
+  overflow: hidden;
+  left: 0;
+}
+
+.navbar-text {
+  font-weight: bold;
+  font-family: "Arial", Times, serif;
+  font-size: 48px;
+  color: white;
+  position: fixed;
+  left: 0.5%;
+}
+
+.profile-picture {
+  width: 3.6em;
+  height: 3.6em;
+  background-color: white;
+  border-radius: 50%;
+  display: inline-block;
+  position: relative;
+  right: 1%;
+  top: 5.5%;
+  overflow: hidden;
+  float: right;
+}
+
+@media only screen and (max-width: 680px) {
+  .navbar-text {
+    font-weight: bold;
+    font-family: "Arial", Times, serif;
+    font-size: 36px;
+    color: white;
+    position: fixed;
+    left: 1%;
+    top: 1%
+  }
+
+  .profile-picture {
+    width: 3em;
+    height: 3em;
+    background-color: white;
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    right: 1%;
+    top: 7%;
+    overflow: hidden;
+    float: right;
+  }
+}
