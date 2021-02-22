@@ -2,6 +2,7 @@ package services
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
 	"net/http"
 	"time"
@@ -42,6 +43,7 @@ func GetAllCurrencys() AllCurrencysResponse {
 	obj := AllCurrencysResponse{}
 	err = json.Unmarshal(body, &obj)
 	if err != nil {
+		fmt.Println(string(body))
 		panic(err.Error())
 	}
 	return obj

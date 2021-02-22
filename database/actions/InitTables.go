@@ -33,7 +33,7 @@ func InitTables() {
 	_, err = stmt.Exec()
 	if err != nil {
 	}
-	stmt, err = conn.Prepare("CREATE TABLE `currency-progress` ( `ID` INT NOT NULL AUTO_INCREMENT , `currency` VARCHAR(3) NOT NULL , `priceUSD` FLOAT NOT NULL , `timestamp` BIGINT NOT NULL , PRIMARY KEY (`ID`));")
+	stmt, err = conn.Prepare("CREATE TABLE `currency-progress` ( `ID` INT NOT NULL AUTO_INCREMENT , `currency` VARCHAR(5) NOT NULL , `priceUSD` FLOAT NOT NULL , `timestamp` BIGINT NOT NULL , PRIMARY KEY (`ID`));")
 	if err != nil {
 		panic(err.Error())
 	}

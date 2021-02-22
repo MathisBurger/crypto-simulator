@@ -45,6 +45,8 @@ func main() {
 	app.Post("/api/login", controller.LoginController)
 	app.Get("/api/checkBalance", controller.CheckBalanceController)
 	app.Get("/api/getAllCurrencys", controller.GetAllCurrencysController)
+	app.Get("/api/getCurrencyData", controller.GetCurrencyDataController)
+
 	go services.CurrencyUpdater()
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {
