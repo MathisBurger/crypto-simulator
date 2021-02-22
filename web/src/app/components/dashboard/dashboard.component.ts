@@ -95,4 +95,8 @@ export class DashboardComponent implements OnInit {
       }, 1000);
     }
   }
+
+  viewCurrency(coinID: string): void {
+    location.href = '/currency-view/' + coinID
+  }
 }

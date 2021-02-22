@@ -23,7 +23,7 @@ func CurrencyUpdater() {
 						changePercent24Hr, _ := strconv.ParseFloat(el.ChangePercent24Hr, 64)
 						vwap24Hr, _ := strconv.ParseFloat(el.Vwap24Hr, 64)
 						if !actions.CheckIfCurrencyExists(el.Symbol) {
-							actions.InsertCurrency(rank, el.Symbol, el.Name, supply, maxSupply, marketCapUSD, volumeUSD24Hr,
+							actions.InsertCurrency(el.ID, rank, el.Symbol, el.Name, supply, maxSupply, marketCapUSD, volumeUSD24Hr,
 								priceUSD, changePercent24Hr, vwap24Hr)
 						}
 						actions.UpdateCurrency(rank, supply, maxSupply, marketCapUSD, volumeUSD24Hr, priceUSD, changePercent24Hr,

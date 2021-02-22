@@ -13,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let currency of currencys" class="space-under bordered">
+      <tr *ngFor="let currency of currencys" class="space-under bordered" (click)="viewCurrency(currency.coin_id)">
         <td>{{currency.rank}}</td>
         <td>{{currency.name}}</td>
         <td>{{currency.symbol}}</td>
