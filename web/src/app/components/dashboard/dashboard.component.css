@@ -1,0 +1,35 @@
+.currency-container {
+  background: #202020;
+  width: 40%;
+  height: 80%;
+  overflow: hidden;
+  position: fixed;
+  top: 10%;
+  left: 5%;
+  border-radius: 25px;
+  box-shadow: 5px 5px 5px #262626;
+}
+
+.trades-container {
+  background: #202020;
+  width: 40%;
+  height: 45%;
+  overflow: hidden;
+  position: fixed;
+  top: 45%;
+  right: 5%;
+  border-radius: 25px;
+  box-shadow: 5px 5px 5px #262626;
+}
+
+.userinfo-container {
+  background: #202020;
+  width: 40%;
+  height: 30%;
+  overflow: hidden;
+  position: fixed;
+  top: 10%;
+  right: 5%;
+  border-radius: 25px;
+  box-shadow: 5px 5px 5px #262626;
+}
