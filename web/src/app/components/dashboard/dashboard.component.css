@@ -30,6 +30,7 @@ tr.bordered>td {
 
 tr.bordered:hover {
   background: #414141;
+
 }
 
 table {
@@ -79,5 +80,39 @@ table {
 
 .balance-card {
   position: relative;
-  
+  top: 5%;
+  left: 5%;
+  width: 40%;
+  height: 30%;
+  background: #232323;
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px #232323;
+  transition: transform .25s ease;
+}
+
+
+.balance-card:hover {
+  transform: scale(1.2);
+}
+
+
+
+.balance-label {
+  position: relative;
+  font-family: "Arial", Times, serif;
+  font-weight: normal;
+  font-size: 18px;
+  color: white;
+  top: 5%;
+  left: 5%;
+}
+
+.balance-value {
+  position: relative;
+  top: 30%;
+  text-align: center;
+  color: white;
+  font-weight: bold;
+  font-family: "Arial", Times, serif;
+  font-size: 2em;
 }
