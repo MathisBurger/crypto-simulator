@@ -14,7 +14,9 @@ func Login(username string, password string) bool {
 	resp, _ := stmt.Query(username)
 	defer resp.Close()
 	var model models.UserModel
-	resp.Next()
+	if !resp.Next() {
+		return false
+	}
 	model = model.ParseModel(resp)
 	spl := strings.Split(model.Password, "§")
 	if utils.DoPasswordsMatch(model.Password, password, spl[0]) {
