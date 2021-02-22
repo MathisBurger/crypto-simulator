@@ -27,7 +27,7 @@ func CurrencyUpdater() {
 					}
 					actions.UpdateCurrency(rank, supply, maxSupply, marketCapUSD, volumeUSD24Hr, priceUSD, changePercent24Hr,
 						vwap24Hr, el.Symbol)
-					actions.InsertCurrencyChange(el.Name, priceUSD, int(time.Now().Unix()))
+					actions.InsertCurrencyChange(el.Symbol, priceUSD, int(time.Now().Unix()))
 				} else {
 					break
 				}
