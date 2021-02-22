@@ -4,7 +4,7 @@
   <hr>
   <table>
     <thead>
-    <tr>
+    <tr class="space-under">
       <td>rank</td>
       <td>name</td>
       <td>symbol</td>
@@ -13,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let currency of currencys">
+      <tr *ngFor="let currency of currencys" class="space-under bordered">
         <td>{{currency.rank}}</td>
         <td>{{currency.name}}</td>
         <td>{{currency.symbol}}</td>
@@ -25,9 +25,12 @@
     </tbody>
   </table>
 </div>
-<div class="userinfo-container">
 
+<div class="userinfo-container">
+  <h1 class="card-heading">personal data</h1>
+  <hr>
 </div>
+
 <div class="trades-container">
 
 </div>

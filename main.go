@@ -46,8 +46,11 @@ func main() {
 	app.Get("/api/checkTokenStatus", controller.GetTokenStatusController)
 	app.Get("/api/checkBalance", controller.CheckBalanceController)
 	app.Get("/api/getAllCurrencys", controller.GetAllCurrencysController)
-	app.Get("/api/getCurrencyData", controller.GetCurrencyDataController)
 	app.Get("/api/getCurrency", controller.GetCurrencyController)
+
+	if os.Getenv("DEPRECATED_ENDPOINTS") == "true" {
+		app.Get("/api/getCurrencyData", controller.GetCurrencyDataController)
+	}
 
 	go services.CurrencyUpdater()
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))

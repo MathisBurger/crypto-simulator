@@ -29,20 +29,22 @@ export class DashboardComponent implements OnInit {
           location.href = '/login';
         }
       } else {
+        console.log(0);
         this.popup.showAsComponent(data.message, '#d41717');
         setTimeout(() => {
-          this.popup.closePopup();
+          //this.popup.closePopup();
         }, 1000);
       }
     });
+
     this.api.getAllCurrencys().subscribe(data => {
       if (data.status) {
-          console.log(data.data);
           this.currencys = data.data;
       } else {
+        console.log(1);
         this.popup.showAsComponent(data.message, '#d41717');
         setTimeout(() => {
-          this.popup.closePopup();
+          //this.popup.closePopup();
         }, 1000);
       }
     });
