@@ -1,9 +1,11 @@
 package actions
 
-func InsertCurrency(name string, price float64, lastUpdated int) {
+func InsertCurrency(
+	rank int, symbol string, name string, supply float64, maxSupply float64, marketCapUSD float64,
+	volumeUSD24Hr float64, priceUSD float64, changePercent24Hr float64, vwap24Hr float64) {
 	conn, _ := connect()
 	defer conn.Close()
-	stmt, _ := conn.Prepare("INSERT INTO `currencys` (`ID`, `name`, `price`, `last-updated`) VALUES (NULL, ?, ?, ?);")
+	stmt, _ := conn.Prepare("INSERT INTO `currencys` (`id`, `rank`, `symbol`, `name`, `supply`, `maxSupply`, `marketCapUSD`, `volumeUSD24Hr`, `priceUSD`, `changePercent24Hr`, `vwap24Hr`) VALUES (NULL, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);")
 	defer stmt.Close()
-	stmt.Exec(name, price, lastUpdated)
+	stmt.Exec(rank, symbol, name, supply, maxSupply, marketCapUSD, volumeUSD24Hr, priceUSD, changePercent24Hr, vwap24Hr)
 }
