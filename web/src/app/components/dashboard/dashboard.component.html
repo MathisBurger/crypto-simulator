@@ -1,8 +1,28 @@
 <app-navbar></app-navbar>
 <div class="currency-container">
-  <h4>currencys</h4>
+  <h1 class="card-heading">currencys</h1>
+  <hr>
   <table>
-
+    <thead>
+    <tr>
+      <td>rank</td>
+      <td>name</td>
+      <td>symbol</td>
+      <td>price(USD)</td>
+      <td>change</td>
+    </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let currency of currencys">
+        <td>{{currency.rank}}</td>
+        <td>{{currency.name}}</td>
+        <td>{{currency.symbol}}</td>
+        <td>{{round(currency.price_usd, 3)}}</td>
+        <td [style]="colorCalculator(parsePositive(round(currency.change_percent_24_hr, 2)))">
+          {{parsePositive(round(currency.change_percent_24_hr, 2))}}%
+        </td>
+      </tr>
+    </tbody>
   </table>
 </div>
 <div class="userinfo-container">

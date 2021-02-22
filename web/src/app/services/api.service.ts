@@ -6,6 +6,7 @@ import {catchError} from 'rxjs/operators';
 import {LoginResponse} from '../models/login-response';
 import {TokenStatusResponse} from '../models/token-status-response';
 import {CookieService} from './cookie.service';
+import {GetAllCurrencysResponse} from '../models/get-all-currencys-response';
 
 const BASE_URL = 'http://localhost:8080/api';
 
@@ -55,6 +56,15 @@ export class APIService {
     params = params.append('username', creds[0]);
     params = params.append('token', creds[1]);
     return this.client.get<TokenStatusResponse>(BASE_URL + '/checkTokenStatus', {params: params})
+      .pipe(catchError(this.handleError));
+  }
+
+  getAllCurrencys(): Observable<GetAllCurrencysResponse> {
+    let creds = new CookieService().getLoginCredentials();
+    let params = new HttpParams();
+    params = params.append('username', creds[0]);
+    params = params.append('token', creds[1]);
+    return this.client.get<GetAllCurrencysResponse>(BASE_URL + '/getAllCurrencys', {params: params})
       .pipe(catchError(this.handleError));
   }
 }

@@ -10,10 +10,23 @@
   box-shadow: 5px 5px 5px #262626;
 }
 
-h1, h2, h3, h4, h5, h6, p {
+h1, h2, h3, h4, h5, h6, p, td {
   color: white;
+  font-family: "Arial", Times, serif;
+}
+td {
+  font-weight: bold;
 }
 
+table {
+  width: 100%;
+  overflow-y: auto;
+}
+
+
+.card-heading {
+  text-align: center;
+}
 
 .trades-container {
   background: #202020;
