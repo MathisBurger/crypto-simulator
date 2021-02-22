@@ -1,5 +1,6 @@
 export interface CurrencyModel {
   id: number;
+  coin_id: string;
   rank: number;
   symbol: string;
   name: string;

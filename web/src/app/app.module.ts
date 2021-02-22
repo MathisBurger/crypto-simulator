@@ -10,12 +10,14 @@ import {HttpClientModule} from '@angular/common/http';
 import {APIService} from './services/api.service';
 import { AlertWindowComponent } from './includes/alert-window/alert-window.component';
 import { NavbarComponent } from './includes/navbar/navbar.component';
+import { CurrencyViewComponent } from './components/currency-view/currency-view.component';
 
 const routes: Routes = [
   {path: '', redirectTo: 'dashboard', pathMatch: 'full'},
   {path: 'dashboard', component: DashboardComponent},
   {path: 'login', component: LoginComponent},
-  {path: 'register', component: RegisterComponent}
+  {path: 'register', component: RegisterComponent},
+  {path: 'currency-view/:currency', component: CurrencyViewComponent}
 ];
 
 @NgModule({
@@ -25,7 +27,8 @@ const routes: Routes = [
     DashboardComponent,
     RegisterComponent,
     AlertWindowComponent,
-    NavbarComponent
+    NavbarComponent,
+    CurrencyViewComponent
   ],
   imports: [
     BrowserModule,

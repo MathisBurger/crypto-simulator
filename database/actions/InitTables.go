@@ -26,7 +26,7 @@ func InitTables() {
 	_, err = stmt.Exec()
 	if err != nil {
 	}
-	stmt, err = conn.Prepare("CREATE TABLE`currencys` ( `id` INT NOT NULL AUTO_INCREMENT , `rank` INT NOT NULL , `symbol` VARCHAR(5) NOT NULL , `name` TEXT NOT NULL , `supply` DOUBLE NOT NULL , `maxSupply` DOUBLE NOT NULL , `marketCapUSD` DOUBLE NOT NULL , `volumeUSD24Hr` DOUBLE NOT NULL , `priceUSD` DOUBLE NOT NULL , `changePercent24Hr` DOUBLE NOT NULL , `vwap24Hr` DOUBLE NOT NULL , PRIMARY KEY (`id`));")
+	stmt, err = conn.Prepare("CREATE TABLE`currencys` ( `id` INT NOT NULL AUTO_INCREMENT , `CoinID` TEXT NOT NULL, `rank` INT NOT NULL , `symbol` VARCHAR(5) NOT NULL , `name` TEXT NOT NULL , `supply` DOUBLE NOT NULL , `maxSupply` DOUBLE NOT NULL , `marketCapUSD` DOUBLE NOT NULL , `volumeUSD24Hr` DOUBLE NOT NULL , `priceUSD` DOUBLE NOT NULL , `changePercent24Hr` DOUBLE NOT NULL , `vwap24Hr` DOUBLE NOT NULL , PRIMARY KEY (`id`));")
 	if err != nil {
 		panic(err.Error())
 	}
