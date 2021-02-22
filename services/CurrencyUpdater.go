@@ -9,10 +9,10 @@ import (
 func CurrencyUpdater() {
 
 	for {
-		for _ = range time.Tick(5 * time.Second) {
+		for _ = range time.Tick(10 * time.Second) {
 			obj := GetAllCurrencys()
 			for i, el := range obj.Data {
-				if i <= 50 {
+				if i < 50 {
 					price, _ := strconv.ParseFloat(el.PriceUSD, 64)
 					if !actions.CheckIfCurrencyExists(el.Symbol) {
 						actions.InsertCurrency(el.Symbol, price, obj.Timestamp)

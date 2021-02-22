@@ -26,7 +26,7 @@ func InitTables() {
 	_, err = stmt.Exec()
 	if err != nil {
 	}
-	stmt, err = conn.Prepare("CREATE TABLE `currencys` ( `ID` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(3) NOT NULL , `price` FLOAT NOT NULL , `last-updated` BIGINT NOT NULL , PRIMARY KEY (`ID`));")
+	stmt, err = conn.Prepare("CREATE TABLE `currencys` ( `ID` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(5) NOT NULL , `price` FLOAT NOT NULL , `last-updated` BIGINT NOT NULL , PRIMARY KEY (`ID`));")
 	if err != nil {
 		panic(err.Error())
 	}
