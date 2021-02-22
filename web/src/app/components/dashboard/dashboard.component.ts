@@ -21,6 +21,7 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.checkNavbarWidth()
     this.api.checkTokenStatus().subscribe(data => {
       if (data.status) {
         if (!data.valid) {
@@ -32,6 +33,18 @@ export class DashboardComponent implements OnInit {
           this.popup.closePopup();
         }, 1000);
       }
+    });
+  }
+
+  checkNavbarWidth(): void {
+    let width = document.querySelector('#picture-box').clientWidth;
+    (document.querySelector('#picture-box') as HTMLDivElement).style.height = width + 'px';
+    (document.querySelector('#picture-box') as HTMLDivElement).style.width = width + 'px';
+    window.addEventListener('resize', () => {
+      console.log('pop');
+      let width = document.querySelector('#picture-box').clientWidth;
+      (document.querySelector('#picture-box') as HTMLDivElement).style.height = width + 'px';
+      (document.querySelector('#picture-box') as HTMLDivElement).style.width = width + 'px';
     });
   }
 
