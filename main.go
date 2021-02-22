@@ -3,7 +3,6 @@ package main
 import (
 	"github.com/MathisBurger/crypto-simulator/controller"
 	"github.com/MathisBurger/crypto-simulator/database/actions"
-	"github.com/MathisBurger/crypto-simulator/services"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
@@ -43,12 +42,13 @@ func main() {
 	app.Get("/api", controller.DefaultController)
 	app.Post("/api/register", controller.RegisterController)
 	app.Post("/api/login", controller.LoginController)
+	app.Get("/api/checkTokenStatus", controller.GetTokenStatusController)
 	app.Get("/api/checkBalance", controller.CheckBalanceController)
 	app.Get("/api/getAllCurrencys", controller.GetAllCurrencysController)
 	app.Get("/api/getCurrencyData", controller.GetCurrencyDataController)
 	app.Get("/api/getCurrency", controller.GetCurrencyController)
 
-	go services.CurrencyUpdater()
+	//go services.CurrencyUpdater()
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {
 		panic(err.Error())

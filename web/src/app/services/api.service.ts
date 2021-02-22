@@ -1,9 +1,11 @@
 import { Injectable } from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {DefaultResponse} from '../models/default-response';
-import {HttpClient, HttpErrorResponse} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
 import {LoginResponse} from '../models/login-response';
+import {TokenStatusResponse} from '../models/token-status-response';
+import {CookieService} from './cookie.service';
 
 const BASE_URL = 'http://localhost:8080/api';
 
@@ -45,5 +47,14 @@ export class APIService {
         password: password
       }
     ).pipe(catchError(this.handleError));
+  }
+
+  checkTokenStatus(): Observable<TokenStatusResponse> {
+    let creds = new CookieService().getLoginCredentials();
+    let params = new HttpParams();
+    params = params.append('username', creds[0]);
+    params = params.append('token', creds[1]);
+    return this.client.get<TokenStatusResponse>(BASE_URL + '/checkTokenStatus', {params: params})
+      .pipe(catchError(this.handleError));
   }
 }

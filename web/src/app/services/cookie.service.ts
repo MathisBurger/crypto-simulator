@@ -13,6 +13,10 @@ export class CookieService {
     this.setCookie('auth_token', auth_token, 7);
   }
 
+  getLoginCredentials(): string[] {
+    return [this.getCookie('username'), this.getCookie('auth_token')]
+  }
+
   private getCookie(name: string) {
     let ca: Array<string> = document.cookie.split(';');
     let caLen: number = ca.length;
