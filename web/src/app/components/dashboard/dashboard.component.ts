@@ -12,6 +12,7 @@ import {CurrencyModel} from '../../models/currency-model';
 })
 export class DashboardComponent implements OnInit {
   currencys: CurrencyModel[];
+  balance: number;
 
   constructor(
     @Inject('APIService') private api: APIService,
@@ -23,30 +24,46 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    let actionCounter = 0;
     this.api.checkTokenStatus().subscribe(data => {
       if (data.status) {
+        actionCounter += 1
         if (!data.valid) {
           location.href = '/login';
         }
       } else {
-        console.log(0);
         this.popup.showAsComponent(data.message, '#d41717');
         setTimeout(() => {
-          //this.popup.closePopup();
+          this.popup.closePopup();
         }, 1000);
       }
+      this.sendLoadedMessage(actionCounter);
     });
 
     this.api.getAllCurrencys().subscribe(data => {
       if (data.status) {
+        actionCounter += 1
           this.currencys = data.data;
       } else {
-        console.log(1);
         this.popup.showAsComponent(data.message, '#d41717');
         setTimeout(() => {
-          //this.popup.closePopup();
+          this.popup.closePopup();
         }, 1000);
       }
+      this.sendLoadedMessage(actionCounter);
+    });
+
+    this.api.getBalance().subscribe(data => {
+      if (data.status) {
+        actionCounter += 1
+        this.balance = data.balance;
+      } else {
+        this.popup.showAsComponent(data.message, '#d41717');
+        setTimeout(() => {
+          this.popup.closePopup();
+        }, 1000);
+      }
+      this.sendLoadedMessage(actionCounter);
     });
   }
 
@@ -67,6 +84,15 @@ export class DashboardComponent implements OnInit {
       return 'color: #00CA0C;';
     } else {
       return 'color: #E51F07;';
+    }
+  }
+
+  sendLoadedMessage(actionCounter: number): void {
+    if (actionCounter == 3) {
+      this.popup.showAsComponent('successfully loaded data', '#1db004');
+      setTimeout(() => {
+        this.popup.closePopup();
+      }, 1000);
     }
   }
 }

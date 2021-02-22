@@ -7,6 +7,7 @@ import {LoginResponse} from '../models/login-response';
 import {TokenStatusResponse} from '../models/token-status-response';
 import {CookieService} from './cookie.service';
 import {GetAllCurrencysResponse} from '../models/get-all-currencys-response';
+import {GetBalanceResponse} from '../models/get-balance-response';
 
 const BASE_URL = 'http://localhost:8080/api';
 
@@ -67,4 +68,15 @@ export class APIService {
     return this.client.get<GetAllCurrencysResponse>(BASE_URL + '/getAllCurrencys', {params: params})
       .pipe(catchError(this.handleError));
   }
+
+  getBalance(): Observable<GetBalanceResponse> {
+    let creds = new CookieService().getLoginCredentials();
+    let params = new HttpParams();
+    params = params.append('username', creds[0]);
+    params = params.append('auth_token', creds[1]);
+    return this.client.get<GetBalanceResponse>(BASE_URL + '/checkBalance', {params: params})
+      .pipe(catchError(this.handleError))
+  }
+
+
 }
