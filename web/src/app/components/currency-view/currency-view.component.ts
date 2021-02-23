@@ -16,6 +16,7 @@ export class CurrencyViewComponent implements OnInit {
   currency: string;
   time = 14400000;
   currModel: CurrencyModel;
+  activeBtn: string = '4h';
 
   constructor(
     @Inject('APIService') private api: APIService,
@@ -73,6 +74,12 @@ export class CurrencyViewComponent implements OnInit {
       if (interval <= 86400000) {
         let spl = date[1].split(':');
         return spl[0] + ':' + spl[1];
+      } else {
+        if (interval > 604800000) {
+          return date[0];
+        }
+        let spl = date[1].split(':');
+        return date[0] + ' ' + spl[0] + ':' + spl[1];
       }
   }
 
@@ -128,4 +135,11 @@ export class CurrencyViewComponent implements OnInit {
     });
   }
 
+  changeTimeRange(value: number, nowActive: string): void {
+    this.time = value;
+    (document.getElementById(this.activeBtn + '-btn') as HTMLDivElement).classList.remove('button-row-element-active');
+    (document.getElementById(nowActive + '-btn') as HTMLDivElement).classList.add('button-row-element-active');
+    this.activeBtn = nowActive;
+    this.chartUpdater();
+  }
 }

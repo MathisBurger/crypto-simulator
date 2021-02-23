@@ -1,18 +1,15 @@
 .chart-container {
   background: #202020;
   width: 80%;
-  height: 70%;
   position: fixed;
   overflow-x: hidden;
   top: 10%;
   left: 10%;
   border-radius: 25px;
   box-shadow: 5px 5px 5px #262626;
+  display: inline-block;
 }
 
-.chart-box {
-  margin: 1em;
-}
 
 ::-webkit-scrollbar {
   background: transparent;
@@ -23,4 +20,36 @@ h1 {
   text-align: center;
   font-size: 2em;
   font-family: "Arial", Times, serif;
+}
+
+.button-row {
+  position: relative;
+  left: 40%;
+  width: 20%;
+  height: 4%;
+  background: #111111;
+  border-radius: 5px;
+  margin-bottom: 1em;
+  margin-top: 0;
+  overflow: hidden;
+}
+
+.button-row-element {
+  position: relative;
+  width: 20%;
+  text-align: center;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  color: white;
+  font-family: "Arial", Times, serif;
+  display: inline-grid;
+  cursor: pointer;
+}
+
+.button-row-element-active {
+  background: #292929;
+}
+
+.button-row-element:hover {
+  background: #292929;
 }
