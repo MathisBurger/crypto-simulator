@@ -43,14 +43,14 @@
   }
 
   .profile-picture {
-    width: 3em;
-    height: 3em;
+    width: 2em;
+    height: 2em;
     background-color: white;
     border-radius: 50%;
     display: inline-block;
     position: relative;
-    right: 1%;
-    top: 7%;
+    right: 3%;
+    top: 22%;
     overflow: hidden;
     float: right;
   }
