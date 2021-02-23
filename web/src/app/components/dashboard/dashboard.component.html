@@ -1,18 +1,19 @@
 <app-navbar></app-navbar>
-<div class="currency-container">
-  <h1 class="card-heading">currencys</h1>
-  <hr>
-  <table>
-    <thead>
-    <tr class="space-under">
-      <td>rank</td>
-      <td>name</td>
-      <td>symbol</td>
-      <td>price(USD)</td>
-      <td>change(24hr)</td>
-    </tr>
-    </thead>
-    <tbody>
+<div class="flex-col">
+  <div class="currency-container">
+    <h1 class="card-heading">currencys</h1>
+    <hr>
+    <table>
+      <thead>
+      <tr class="space-under">
+        <td>rank</td>
+        <td>name</td>
+        <td>symbol</td>
+        <td>price(USD)</td>
+        <td>change(24hr)</td>
+      </tr>
+      </thead>
+      <tbody>
       <tr *ngFor="let currency of currencys" class="space-under bordered" (click)="viewCurrency(currency.coin_id)">
         <td>{{currency.rank}}</td>
         <td>{{currency.name}}</td>
@@ -22,19 +23,20 @@
           {{parsePositive(round(currency.change_percent_24_hr, 2))}}%
         </td>
       </tr>
-    </tbody>
-  </table>
-</div>
-
-<div class="userinfo-container">
-  <h1 class="card-heading">personal data</h1>
-  <hr>
-  <div class="balance-card">
-    <div class="balance-value">{{balance}}$</div>
+      </tbody>
+    </table>
   </div>
-</div>
 
-<div class="trades-container">
-  <h1 class="card-heading">trades</h1>
-  <hr>
+  <div class="userinfo-container">
+    <h1 class="card-heading">personal data</h1>
+    <hr>
+    <div class="balance-card">
+      <div class="balance-value">{{balance}}$</div>
+    </div>
+  </div>
+
+  <div class="trades-container">
+    <h1 class="card-heading">trades</h1>
+    <hr>
+  </div>
 </div>
