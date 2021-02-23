@@ -4,6 +4,7 @@ import {AlertWindowService} from '../../includes/alert-window/alert-window.servi
 import {createCustomElement} from '@angular/elements';
 import {AlertWindowComponent} from '../../includes/alert-window/alert-window.component';
 import {CurrencyModel} from '../../models/currency-model';
+import {TradeModel} from '../../models/trade-model';
 
 @Component({
   selector: 'app-dashboard',
@@ -12,6 +13,7 @@ import {CurrencyModel} from '../../models/currency-model';
 })
 export class DashboardComponent implements OnInit {
   currencys: CurrencyModel[];
+  trades: TradeModel[];
   balance: number;
 
   constructor(
@@ -65,6 +67,19 @@ export class DashboardComponent implements OnInit {
       }
       this.sendLoadedMessage(actionCounter);
     });
+
+    this.api.getAllTrades().subscribe(data => {
+      if (data.status) {
+        actionCounter += 1
+        this.trades = data.data;
+      } else {
+        this.popup.showAsComponent(data.message, '#d41717');
+        setTimeout(() => {
+          this.popup.closePopup();
+        }, 1000);
+      }
+      this.sendLoadedMessage(actionCounter);
+    });
   }
 
   round(price: number, decimals: number): string {
@@ -88,7 +103,7 @@ export class DashboardComponent implements OnInit {
   }
 
   sendLoadedMessage(actionCounter: number): void {
-    if (actionCounter == 3) {
+    if (actionCounter == 4) {
       this.popup.showAsComponent('successfully loaded data', '#1db004');
       setTimeout(() => {
         this.popup.closePopup();
@@ -98,5 +113,9 @@ export class DashboardComponent implements OnInit {
 
   viewCurrency(coinID: string): void {
     location.href = '/currency-view/' + coinID
+  }
+
+  parseTime(unix: number): string {
+    return new Date(unix * 1000).toLocaleString('en-US');
   }
 }

@@ -38,5 +38,23 @@
   <div class="trades-container">
     <h1 class="card-heading">trades</h1>
     <hr>
+    <table>
+      <thead>
+      <tr class="space-under">
+        <td>trade</td>
+        <td>coinprice</td>
+        <td>amount</td>
+        <td>timestamp</td>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let trade of trades" class="space-under bordered">
+        <td>{{trade.trade}}</td>
+        <td>{{trade.coin_price}}</td>
+        <td>{{trade.amount}}</td>
+        <td>{{parseTime(trade.timestamp)}}</td>
+      </tr>
+      </tbody>
+    </table>
   </div>
 </div>
