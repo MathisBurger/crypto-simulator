@@ -4,6 +4,7 @@ import {AlertWindowService} from '../../includes/alert-window/alert-window.servi
 import {ActivatedRoute} from '@angular/router';
 import {createCustomElement} from '@angular/elements';
 import {AlertWindowComponent} from '../../includes/alert-window/alert-window.component';
+import * as Chart from 'chart.js';
 
 @Component({
   selector: 'app-currency-view',
@@ -12,6 +13,7 @@ import {AlertWindowComponent} from '../../includes/alert-window/alert-window.com
 })
 export class CurrencyViewComponent implements OnInit {
   currency: string;
+  time = 14400000;
 
   constructor(
     @Inject('APIService') private api: APIService,
@@ -38,6 +40,26 @@ export class CurrencyViewComponent implements OnInit {
           this.popup.closePopup();
         }, 1000);
       }
+      this.sendLoadedMessage(actionCounter);
+    });
+    this.api.fetchCurrencyHistory(this.currency, this.time).subscribe(data => {
+      var chart = new Chart('currency-chart', {
+        type: 'pie',
+        data: {
+          datasets: [{
+            data: [50, 50],
+            backgroundColor: ['red', 'green']
+          }],
+          labels: ['ausstehend', 'fertig']
+        },
+        options: {
+          legend: {
+            display: false
+          },
+          responsive: false,
+        }
+      });
+      actionCounter += 1;
       this.sendLoadedMessage(actionCounter);
     });
   }

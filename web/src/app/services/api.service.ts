@@ -8,6 +8,7 @@ import {TokenStatusResponse} from '../models/token-status-response';
 import {CookieService} from './cookie.service';
 import {GetAllCurrencysResponse} from '../models/get-all-currencys-response';
 import {GetBalanceResponse} from '../models/get-balance-response';
+import {CurrencyHistoryResponse} from '../models/currency-history-response';
 
 const BASE_URL = 'http://localhost:8080/api';
 
@@ -78,5 +79,26 @@ export class APIService {
       .pipe(catchError(this.handleError))
   }
 
-
+  fetchCurrencyHistory(name: string, time: number): Observable<CurrencyHistoryResponse> {
+    let interval = '';
+    let end = Math.floor(Date.now());
+    let start = end - time;
+    if (time <= 3600000) {
+      interval = 'm1';
+    } else if (time <= 14400000) {
+      interval = 'm5';
+    } else if (time <= 43200000) {
+      interval = 'm15';
+    } else if (time <= 86400000) {
+      interval = 'm30';
+    } else if (time <= 604800000) {
+      interval = 'h6';
+    } else if (time <= 1209600000) {
+      interval = 'h12';
+    } else {
+      interval = 'd1';
+    }
+    return this.client.get<CurrencyHistoryResponse>('https://api.coincap.io/v2/assets/' + name + '/history?interval=' + interval + '&start=' + start + '&end=' + end)
+      .pipe(catchError(this.handleError));
+  }
 }
