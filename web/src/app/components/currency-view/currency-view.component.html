@@ -1,12 +1,37 @@
 <app-navbar></app-navbar>
-<div class="chart-container">
-  <h1>{{currModel.name}}({{currModel.symbol}})</h1>
-  <div class="button-row">
-    <div class="button-row-element button-row-element-active" id="4h-btn" (click)="changeTimeRange(14400000, '4h')">4h</div>
-    <div class="button-row-element" id="12h-btn" (click)="changeTimeRange(43200000, '12h')">12h</div>
-    <div class="button-row-element" id="1d-btn" (click)="changeTimeRange(86400000, '1d')">1d</div>
-    <div class="button-row-element" id="1wk-btn" (click)="changeTimeRange(604800000, '1wk')">1wk</div>
-    <div class="button-row-element" id="1m-btn" (click)="changeTimeRange(2592000000, '1m')">1M</div>
+<div class="display-grid">
+  <div class="chart-container">
+    <h1>{{currModel.name}}({{currModel.symbol}})</h1>
+    <div class="button-row">
+      <div class="button-row-element button-row-element-active" id="4h-btn" (click)="changeTimeRange(14400000, '4h')">4h</div>
+      <div class="button-row-element" id="12h-btn" (click)="changeTimeRange(43200000, '12h')">12h</div>
+      <div class="button-row-element" id="1d-btn" (click)="changeTimeRange(86400000, '1d')">1d</div>
+      <div class="button-row-element" id="1wk-btn" (click)="changeTimeRange(604800000, '1wk')">1wk</div>
+      <div class="button-row-element" id="1m-btn" (click)="changeTimeRange(2592000000, '1m')">1M</div>
+    </div>
+    <canvas id="currency-chart" class="chart-box" height="100"></canvas>
   </div>
-  <canvas id="currency-chart" class="chart-box" height="100"></canvas>
+  <div class="card-grid">
+    <div class="card-element">
+      <p>rank:</p>
+      <h1>{{currModel.rank}}</h1>
+    </div>
+    <div class="card-element">
+      <p>price (USD):</p>
+      <h1>{{round(currModel.price_usd, 3)}}$</h1>
+    </div>
+    <div class="card-element">
+      <p>vwap (24hr):</p>
+      <h1>{{round(currModel.vwap_24_hr, 2)}}</h1>
+    </div>
+    <div class="card-element">
+      <p>change:</p>
+      <h1 [style]="colorCalculator(parsePositive(round(currModel.change_percent_24_hr, 2)))">
+        {{parsePositive(round(currModel.change_percent_24_hr, 2))}}%
+      </h1>
+    </div>
+    <div class="card-element trade-card">
+        <h1 class="trade-card-h1">trade</h1>
+    </div>
+  </div>
 </div>

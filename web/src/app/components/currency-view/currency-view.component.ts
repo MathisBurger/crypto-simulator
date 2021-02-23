@@ -60,6 +60,26 @@ export class CurrencyViewComponent implements OnInit {
     });
   }
 
+  round(price: number, decimals: number): string {
+    return price.toFixed(decimals);
+  }
+
+  parsePositive(num: string): string {
+    if (parseFloat(num) > 0) {
+      return '+' + num;
+    } else {
+      return num
+    }
+  }
+
+  colorCalculator(value: string): string {
+    if (value.indexOf('+') > -1) {
+      return 'color: #00CA0C;';
+    } else {
+      return 'color: #E51F07;';
+    }
+  }
+
   sendLoadedMessage(actionCounter: number): void {
     if (actionCounter == 2) {
       this.popup.showAsComponent('successfully loaded data', '#1db004');

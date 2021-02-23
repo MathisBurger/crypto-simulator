@@ -10,7 +10,6 @@
   display: inline-block;
 }
 
-
 ::-webkit-scrollbar {
   background: transparent;
 }
@@ -52,4 +51,63 @@ h1 {
 
 .button-row-element:hover {
   background: #292929;
+}
+
+.display-grid {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.card-grid {
+  display: flex;
+  flex-wrap: wrap;
+  width: 80%;
+  left: 10%;
+  position: absolute;
+  height: 17%;
+  bottom: 2%;
+  gap: 2.5%;
+  row-gap: 1em;
+  align-content: center;
+}
+
+.card-element {
+  display: inline-block;
+  width: 270px;
+  height: 85%;
+  background: #232323;
+  border-radius: 10px;
+  box-shadow: 2px 2px 2px #232323;
+  transition: transform .25s ease;
+  overflow: hidden;
+}
+
+.trade-card {
+  background: #0f86ec;
+}
+
+.trade-card-h1 {
+  text-align: center;
+  top: 15%;
+  position: relative;
+}
+
+.card-element p {
+  color: white;
+  font-weight: bold;
+  font-family: "Arial", Times, serif;
+  text-align: center;
+  font-size: 1.2em;
+}
+
+.card-element h1 {
+  color: white;
+  font-weight: bold;
+  font-family: "Arial", Times, serif;
+  text-align: center;
+  font-size: 2.3em;
+}
+
+.card-element:hover {
+  transform: scale(1.2);
 }
