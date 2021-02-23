@@ -47,6 +47,7 @@ func main() {
 	app.Get("/api/checkBalance", controller.CheckBalanceController)
 	app.Get("/api/getAllCurrencys", controller.GetAllCurrencysController)
 	app.Get("/api/getCurrency", controller.GetCurrencyController)
+	app.Post("/api/buyCrypto", controller.BuyCryptoController)
 
 	if os.Getenv("DEPRECATED_ENDPOINTS") == "true" {
 		app.Get("/api/getCurrencyData", controller.GetCurrencyDataController)

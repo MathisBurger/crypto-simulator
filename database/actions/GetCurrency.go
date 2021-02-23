@@ -15,6 +15,9 @@ func GetCurrency(name string) models.CurrencyModel {
 		panic(err.Error())
 	}
 	defer resp.Close()
-	resp.Next()
-	return models.CurrencyModel{}.Parse(resp)
+	if resp.Next() {
+		return models.CurrencyModel{}.Parse(resp)
+	} else {
+		return models.CurrencyModel{}
+	}
 }

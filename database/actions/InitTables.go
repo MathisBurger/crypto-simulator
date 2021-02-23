@@ -12,14 +12,14 @@ func InitTables() {
 	_, err = stmt.Exec()
 	if err != nil {
 	}
-	stmt, err = conn.Prepare("CREATE TABLE `wallets` ( `id` INT NOT NULL AUTO_INCREMENT , `UUID` VARCHAR(32) NOT NULL , `balanceUSD` FLOAT NOT NULL , `currencyArray` TEXT NOT NULL , PRIMARY KEY (`id`));")
+	stmt, err = conn.Prepare("CREATE TABLE `wallets` ( `id` INT NOT NULL AUTO_INCREMENT , `UUID` VARCHAR(32) NOT NULL , `balanceUSD` DOUBLE NOT NULL , `currencyArray` TEXT NOT NULL , PRIMARY KEY (`id`));")
 	if err != nil {
 		panic(err.Error())
 	}
 	_, err = stmt.Exec()
 	if err != nil {
 	}
-	stmt, err = conn.Prepare("CREATE TABLE `trades` ( `id` INT NOT NULL AUTO_INCREMENT , `trade` VARCHAR(8) NOT NULL , `walletUUID` INT NOT NULL , `CoinPrice` FLOAT NOT NULL , `OfferPrice` INT NOT NULL , `timestamp` BIGINT NOT NULL , PRIMARY KEY (`id`));")
+	stmt, err = conn.Prepare("CREATE TABLE `trades` ( `id` INT NOT NULL AUTO_INCREMENT , `trade` VARCHAR(16) NOT NULL , `walletUUID` VARCHAR(32) NOT NULL , `CoinPrice` FLOAT NOT NULL , `Amount` FLOAT NOT NULL , `timestamp` BIGINT NOT NULL , PRIMARY KEY (`id`));")
 	if err != nil {
 		panic(err.Error())
 	}

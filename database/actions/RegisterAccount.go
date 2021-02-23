@@ -41,7 +41,7 @@ func RegisterAccount(username string, password string) bool {
 }
 
 func createWallet(conn *sql.DB) (bool, string) {
-	stmt, err := conn.Prepare("INSERT INTO `wallets` (`id`, `UUID`, `balanceUSD`, `currencyArray`) VALUES (NULL, ?, '100', '[]');")
+	stmt, err := conn.Prepare("INSERT INTO `wallets` (`id`, `UUID`, `balanceUSD`, `currencyArray`) VALUES (NULL, ?, '100', '');")
 	if err != nil {
 		return false, ""
 	}
