@@ -1,5 +1,6 @@
 export interface CurrencyHistoryEntrys {
-  price: string;
+  priceUsd: string;
   time: number;
   date: string;
+  circulatingSupply: string;
 }

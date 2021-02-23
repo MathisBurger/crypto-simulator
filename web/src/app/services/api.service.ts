@@ -9,6 +9,7 @@ import {CookieService} from './cookie.service';
 import {GetAllCurrencysResponse} from '../models/get-all-currencys-response';
 import {GetBalanceResponse} from '../models/get-balance-response';
 import {CurrencyHistoryResponse} from '../models/currency-history-response';
+import {GetCurrencyResponse} from '../models/get-currency-response';
 
 const BASE_URL = 'http://localhost:8080/api';
 
@@ -99,6 +100,16 @@ export class APIService {
       interval = 'd1';
     }
     return this.client.get<CurrencyHistoryResponse>('https://api.coincap.io/v2/assets/' + name + '/history?interval=' + interval + '&start=' + start + '&end=' + end)
+      .pipe(catchError(this.handleError));
+  }
+
+  getCurrency(name: string): Observable<GetCurrencyResponse> {
+    let creds = new CookieService().getLoginCredentials();
+    let params = new HttpParams();
+    params = params.append('username', creds[0]);
+    params = params.append('token', creds[1]);
+    params = params.append('currency', name);
+    return this.client.get<GetCurrencyResponse>(BASE_URL + '/getCurrency', {params: params})
       .pipe(catchError(this.handleError));
   }
 }
