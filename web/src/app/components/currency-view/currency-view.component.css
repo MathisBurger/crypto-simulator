@@ -113,6 +113,78 @@ h1 {
   transform: scale(1.2);
 }
 
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+  color: white;
+}
+
+.modal-content {
+  background-color: #2B2B2B;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #2B2B2B;
+  border-radius: 15px;
+  width: 80%;
+}
+
+.close {
+  color: #aaa;
+  float: right;
+  font-size: 28px;
+  font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.card-row {
+  display: flex;
+  width: 80%;
+  height: 20%;
+  align-items: center;
+  margin-top: 1em;
+}
+
+.modal-input {
+  width: 80%;
+  border: none;
+  border-radius: 10px;
+  color: black;
+  font-weight: bold;
+  font-family: "Arial", Times, serif;
+  font-size: 3em;
+  box-shadow: 2px 2px 2px white;
+}
+
+.modal-button {
+  margin-left: 0.5em;
+  width: fit-content;
+  font-size: 3em;
+  border-radius: 10px;
+  border: 2px solid #0f86ec;
+  background: #1b94fa;
+  color: white;
+  font-family: "Arial", Times, serif;
+  font-weight: bold;
+}
+
+.modal-button-sell {
+  border: 2px solid #ec0f16;
+  background: #fa1b1b;
+}
+
 @media only screen and (max-width: 680px)  {
   .button-row {
     width: 80%;

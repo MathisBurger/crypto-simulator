@@ -1,4 +1,19 @@
 <app-navbar></app-navbar>
+<div id="sellModal" class="modal">
+  <div class="modal-content">
+    <span class="close" (click)="closeModal()">&times;</span>
+    <h1>Trades</h1>
+    <div class="card-row">
+      <input type="number" class="modal-input" value="0">
+      <button class="modal-button">Buy</button>
+    </div>
+    <div class="card-row">
+      <input type="number" class="modal-input" value="0">
+      <button class="modal-button modal-button-sell">Sell</button>
+    </div>
+  </div>
+
+</div>
 <div class="display-grid">
   <div class="chart-container">
     <h1>{{currModel.name}}({{currModel.symbol}})</h1>
@@ -31,7 +46,7 @@
       </h1>
     </div>
     <div class="card-element trade-card">
-        <h1 class="trade-card-h1">trade</h1>
+        <h1 class="trade-card-h1" (click)="openModal()">trade</h1>
     </div>
   </div>
 </div>

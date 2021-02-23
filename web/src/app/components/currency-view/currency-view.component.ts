@@ -162,4 +162,14 @@ export class CurrencyViewComponent implements OnInit {
     this.activeBtn = nowActive;
     this.chartUpdater();
   }
+
+  openModal(): void {
+    var modal = document.querySelector('#sellModal') as HTMLDivElement;
+    modal.style.display = 'block';
+  }
+
+  closeModal(): void {
+    var modal = document.querySelector('#sellModal') as HTMLDivElement;
+    modal.style.display = 'none';
+  }
 }

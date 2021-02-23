@@ -34,6 +34,12 @@ func SellCryptoController(c *fiber.Ctx) error {
 			"Invalid JSON body",
 		})
 	}
+	if obj.Amount < 0 {
+		return c.JSON(sellCryptoResponse{
+			false,
+			"Value must be higher than zero",
+		})
+	}
 	if actions.LoginWithToken(obj.Username, obj.Token) {
 		user := actions.GetUserByUsername(obj.Username)
 		currency := actions.GetCurrency(obj.CurrencyID)
