@@ -5,6 +5,7 @@ import {createCustomElement} from '@angular/elements';
 import {AlertWindowComponent} from '../../includes/alert-window/alert-window.component';
 import {CurrencyModel} from '../../models/currency-model';
 import {TradeModel} from '../../models/trade-model';
+import {CurrencyArrayEntry} from '../../models/currency-array-entry';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +16,7 @@ export class DashboardComponent implements OnInit {
   currencys: CurrencyModel[];
   trades: TradeModel[];
   balance: number;
+  wallets: CurrencyArrayEntry[];
 
   constructor(
     @Inject('APIService') private api: APIService,
@@ -80,6 +82,19 @@ export class DashboardComponent implements OnInit {
       }
       this.sendLoadedMessage(actionCounter);
     });
+
+    this.api.getWalletForUser().subscribe(data => {
+      if (data.status) {
+        actionCounter += 1
+        this.wallets = data.data;
+      } else {
+        this.popup.showAsComponent(data.message, '#d41717');
+        setTimeout(() => {
+          this.popup.closePopup();
+        }, 1000);
+      }
+      this.sendLoadedMessage(actionCounter);
+    })
   }
 
   round(price: number, decimals: number): string {
@@ -103,7 +118,7 @@ export class DashboardComponent implements OnInit {
   }
 
   sendLoadedMessage(actionCounter: number): void {
-    if (actionCounter == 4) {
+    if (actionCounter == 5) {
       this.popup.showAsComponent('successfully loaded data', '#1db004');
       setTimeout(() => {
         this.popup.closePopup();
