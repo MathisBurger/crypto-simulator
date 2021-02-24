@@ -34,7 +34,7 @@ func BuyCryptoController(c *fiber.Ctx) error {
 			"Invalid JSON body",
 		})
 	}
-	if obj.Amount < 0 {
+	if obj.Amount <= 0 {
 		return c.JSON(sellCryptoResponse{
 			false,
 			"Value must be higher than zero",
@@ -74,5 +74,5 @@ func BuyCryptoController(c *fiber.Ctx) error {
 }
 
 func checkBuyCryptoRequest(obj buyCryptoRequest) bool {
-	return obj.Username != "" && obj.Token != "" && obj.CurrencyID != "" && obj.Amount > 0
+	return obj.Username != "" && obj.Token != "" && obj.CurrencyID != ""
 }

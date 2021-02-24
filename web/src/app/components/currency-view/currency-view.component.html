@@ -9,7 +9,7 @@
     </div>
     <div class="card-row">
       <input type="number" class="modal-input" value="0" #sellInput>
-      <button class="modal-button modal-button-sell">Sell</button>
+      <button class="modal-button modal-button-sell" (click)="sellCrypto(sellInput.value)">Sell</button>
     </div>
   </div>
 

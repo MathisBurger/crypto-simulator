@@ -189,4 +189,21 @@ export class CurrencyViewComponent implements OnInit {
       }
     })
   }
+
+  sellCrypto(amount: string): void {
+    this.api.sellCrypto(this.currency, +amount).subscribe(data => {
+      if (data.status) {
+        this.closeModal();
+        this.popup.showAsComponent(data.message, '#1db004');
+        setTimeout(() => {
+          this.popup.closePopup();
+        }, 1000);
+      } else {
+        this.popup.showAsComponent(data.message, '#d41717');
+        setTimeout(() => {
+          this.popup.closePopup();
+        }, 1000);
+      }
+    })
+  }
 }
