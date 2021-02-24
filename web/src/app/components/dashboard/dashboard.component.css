@@ -166,4 +166,8 @@ table {
       height: 60%;
       position: absolute;
     }
+
+    .balance-card {
+      left: 21%;
+    }
 }
