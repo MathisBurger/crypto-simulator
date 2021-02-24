@@ -11,6 +11,8 @@ import {GetBalanceResponse} from '../models/get-balance-response';
 import {CurrencyHistoryResponse} from '../models/currency-history-response';
 import {GetCurrencyResponse} from '../models/get-currency-response';
 import {GetAllTradesResponse} from '../models/get-all-trades-response';
+import {BuyCryptoResponse} from '../models/buy-crypto-response';
+import {SellCryptoResponse} from '../models/sell-crypto-response';
 
 const BASE_URL = 'http://localhost:8080/api';
 
@@ -121,5 +123,27 @@ export class APIService {
     params = params.append('token', creds[1]);
     return this.client.get<GetAllTradesResponse>(BASE_URL + '/getAllTrades', {params: params})
       .pipe(catchError(this.handleError));
+  }
+
+  buyCrypto(currencyID: string, amount: number): Observable<BuyCryptoResponse> {
+    let creds = new CookieService().getLoginCredentials();
+    return this.client.post<BuyCryptoResponse>(BASE_URL + '/buyCrypto',
+      {
+        username: creds[0],
+        token: creds[1],
+        currency_id: currencyID,
+        amount: amount
+      }).pipe(catchError(this.handleError));
+  }
+
+  sellCrypto(currencyID: string, amount: number): Observable<SellCryptoResponse> {
+    let creds = new CookieService().getLoginCredentials();
+    return this.client.post<SellCryptoResponse>(BASE_URL + '/sellCrypto',
+      {
+        username: creds[0],
+        token: creds[1],
+        currency_id: currencyID,
+        amount: amount
+      }).pipe(catchError(this.handleError));
   }
 }
