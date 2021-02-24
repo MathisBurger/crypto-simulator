@@ -61,6 +61,7 @@ h1 {
 .card-grid {
   display: flex;
   flex-wrap: wrap;
+  justify-content: center;
   width: 80%;
   left: 10%;
   position: absolute;

@@ -30,8 +30,24 @@
   <div class="userinfo-container">
     <h1 class="card-heading">personal data</h1>
     <hr>
-    <div class="balance-card">
-      <div class="balance-value">{{round(balance, 0)}}$</div>
+    <div class="">
+      <div class="balance-card flex-personal-data-balance">
+        <div class="balance-value">{{round(balance, 0)}}$</div>
+      </div>
+      <table class="flex-personal-data-table">
+        <thead>
+        <tr class="space-under">
+          <td>symbol</td>
+          <td>amount</td>
+        </tr>
+        </thead>
+        <tbody>
+        <tr *ngFor="let trade of trades" class="space-under bordered">
+          <td>{{trade.trade}}</td>
+          <td>{{trade.coin_price}}</td>
+        </tr>
+        </tbody>
+      </table>
     </div>
   </div>
 
