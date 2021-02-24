@@ -56,6 +56,13 @@ func main() {
 		app.Get("/api/getCurrencyData", controller.GetCurrencyDataController)
 	}
 
+	// Web endpoints
+	app.Static("/", "./web/dist/web")
+	app.Static("/register", "./web/dist/web/index.html")
+	app.Static("/login", "./web/dist/web/index.html")
+	app.Static("/dashboard", "./web/dist/web/index.html")
+	app.Static("/currency-view/*", "./web/dist/web/index.html")
+
 	go services.CurrencyUpdater()
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {

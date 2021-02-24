@@ -15,7 +15,7 @@ import {BuyCryptoResponse} from '../models/buy-crypto-response';
 import {SellCryptoResponse} from '../models/sell-crypto-response';
 import {GetWalletsForUserResponse} from '../models/get-wallets-for-user-response';
 
-const BASE_URL = 'http://localhost:8080/api';
+const BASE_URL = 'https://crypto.mathis-burger.de/api';
 
 @Injectable({
   providedIn: 'root'

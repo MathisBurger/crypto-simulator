@@ -30,17 +30,11 @@ export class DashboardComponent implements OnInit {
   ngOnInit(): void {
     let actionCounter = 0;
     this.api.checkTokenStatus().subscribe(data => {
-      if (data.status) {
+      console.log(data);
         actionCounter += 1
         if (!data.valid) {
           location.href = '/login';
         }
-      } else {
-        this.popup.showAsComponent(data.message, '#d41717');
-        setTimeout(() => {
-          this.popup.closePopup();
-        }, 1000);
-      }
       this.sendLoadedMessage(actionCounter);
     });
 
