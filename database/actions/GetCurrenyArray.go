@@ -20,7 +20,9 @@ func GetCurrencyArray(UUID string) []models.CurrencyArrayModel {
 		spl := strings.Split(el, "|")
 		if len(spl) == 2 {
 			fl, _ := strconv.ParseFloat(spl[1], 64)
-			answers = append(answers, models.CurrencyArrayModel{spl[0], fl})
+			if fl != 0 {
+				answers = append(answers, models.CurrencyArrayModel{spl[0], fl})
+			}
 		}
 	}
 	return answers
