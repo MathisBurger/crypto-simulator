@@ -5,6 +5,11 @@ import (
 	"time"
 )
 
+// ---------------------------------
+//            DEPRECATED
+//    This action is deprecated
+//   It can be enabled via config
+// ---------------------------------
 func GetCurrencyData(name string, timePeriod int) []models.CurrencyProgressModel {
 	timestamp := time.Now().Unix() - int64(timePeriod)
 	conn, _ := connect()

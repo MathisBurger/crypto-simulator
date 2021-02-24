@@ -13,6 +13,11 @@ type getCurrencyDataResponse struct {
 	Data    []models.CurrencyProgressModel `json:"data"`
 }
 
+// ---------------------------------
+//            DEPRECATED
+//   This endpoint is deprecated
+//   It can be enabled via config
+// ---------------------------------
 func GetCurrencyDataController(c *fiber.Ctx) error {
 	username := c.Query("username")
 	token := c.Query("token")

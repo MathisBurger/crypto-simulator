@@ -13,6 +13,7 @@ import {GetCurrencyResponse} from '../models/get-currency-response';
 import {GetAllTradesResponse} from '../models/get-all-trades-response';
 import {BuyCryptoResponse} from '../models/buy-crypto-response';
 import {SellCryptoResponse} from '../models/sell-crypto-response';
+import {GetWalletsForUserResponse} from '../models/get-wallets-for-user-response';
 
 const BASE_URL = 'http://localhost:8080/api';
 
@@ -145,5 +146,14 @@ export class APIService {
         currency_id: currencyID,
         amount: amount
       }).pipe(catchError(this.handleError));
+  }
+
+  getWalletForUser(): Observable<GetWalletsForUserResponse> {
+    let creds = new CookieService().getLoginCredentials();
+    let params = new HttpParams();
+    params = params.append('username', creds[0]);
+    params = params.append('token', creds[1]);
+    return this.client.get<GetWalletsForUserResponse>(BASE_URL + '/getWalletsForUser', {params: params})
+      .pipe(catchError(this.handleError));
   }
 }
