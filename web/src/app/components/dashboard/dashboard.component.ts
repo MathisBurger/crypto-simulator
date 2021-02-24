@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit {
     this.api.getAllTrades().subscribe(data => {
       if (data.status) {
         actionCounter += 1
-        this.trades = data.data;
+        this.trades = data.data.reverse();
       } else {
         this.popup.showAsComponent(data.message, '#d41717');
         setTimeout(() => {
