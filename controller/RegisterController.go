@@ -17,9 +17,10 @@ type registerResponse struct {
 }
 
 func RegisterController(c *fiber.Ctx) error {
-	raw := string(c.Body())
+
+	// parsing and checking request
 	obj := registerRequest{}
-	err := json.Unmarshal([]byte(raw), &obj)
+	err := json.Unmarshal(c.Body(), &obj)
 	if err != nil {
 		return c.JSON(registerResponse{
 			false,
@@ -32,11 +33,14 @@ func RegisterController(c *fiber.Ctx) error {
 			"Invalid JSON body",
 		})
 	}
+
+	// register account
 	if actions.RegisterAccount(obj.Username, obj.Password) {
 		return c.JSON(registerResponse{
 			true,
 			"Successfully created account",
 		})
+
 	} else {
 		return c.JSON(registerResponse{
 			false,
@@ -45,6 +49,7 @@ func RegisterController(c *fiber.Ctx) error {
 	}
 }
 
+// checks request
 func checkRegisterRequest(obj registerRequest) bool {
 	return obj.Username != "" && obj.Password != ""
 }
