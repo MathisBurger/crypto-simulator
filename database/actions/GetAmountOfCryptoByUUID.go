@@ -7,15 +7,25 @@ import (
 )
 
 func GetAmountOfCryptoByUUID(UUID string, symbol string) float64 {
+
 	conn, _ := connect()
 	defer conn.Close()
+
 	stmt, _ := conn.Prepare("SELECT * FROM `wallets` WHERE `UUID`=?")
 	defer stmt.Close()
+
 	resp, _ := stmt.Query(UUID)
 	defer resp.Close()
+
+	// existence is sure
 	resp.Next()
+
 	currencyArray := strings.Split(models.WalletModel{}.Parse(resp).CurrencyArray, ";")
+
+	// check if crypto is in wallet
 	if len(currencyArray) > 1 {
+
+		// check for currency
 		for _, el := range currencyArray {
 			spl := strings.Split(el, "|")
 			if spl[0] == symbol {

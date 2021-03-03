@@ -6,17 +6,15 @@ import (
 )
 
 func GetAllTradesForUser(UUID string) []models.TradesModel {
+
 	conn, _ := connect()
 	defer conn.Close()
-	stmt, err := conn.Prepare("SELECT * FROM `trades` WHERE `walletUUID`=? AND `timestamp`>?")
-	if err != nil {
-		panic(err.Error())
-	}
+
+	stmt, _ := conn.Prepare("SELECT * FROM `trades` WHERE `walletUUID`=? AND `timestamp`>?")
 	defer stmt.Close()
-	resp, err := stmt.Query(UUID, time.Now().Unix()-604800)
-	if err != nil {
-		panic(err.Error())
-	}
+
+	resp, _ := stmt.Query(UUID, time.Now().Unix()-604800)
 	defer resp.Close()
+
 	return models.TradesModel{}.ParseAll(resp)
 }

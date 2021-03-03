@@ -7,15 +7,23 @@ import (
 )
 
 func GetCurrencyArray(UUID string) []models.CurrencyArrayModel {
+
 	conn, _ := connect()
 	defer conn.Close()
+
 	stmt, _ := conn.Prepare("SELECT * FROM `wallets` WHERE `UUID`=?")
 	defer stmt.Close()
+
 	resp, _ := stmt.Query(UUID)
 	defer resp.Close()
+
+	// must exist
 	resp.Next()
+
 	arr := strings.Split(models.WalletModel{}.Parse(resp).CurrencyArray, ";")
 	var answers []models.CurrencyArrayModel
+
+	// fetch all currencies of user
 	for _, el := range arr {
 		spl := strings.Split(el, "|")
 		if len(spl) == 2 {
