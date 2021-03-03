@@ -11,6 +11,7 @@ type UserModel struct {
 	CreatedAt  int    `json:"created-at"`
 }
 
+// parse single value
 func (c UserModel) ParseModel(resp *sql.Rows) UserModel {
 	var mdl UserModel
 	err := resp.Scan(&mdl.ID, &mdl.Username, &mdl.Password, &mdl.WalletUUID, &mdl.AuthToken, &mdl.CreatedAt)

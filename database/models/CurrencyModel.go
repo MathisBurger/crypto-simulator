@@ -4,7 +4,7 @@ import "database/sql"
 
 type CurrencyModel struct {
 	ID                int     `json:"id"`
-	CoinID string `json:"coin_id"`
+	CoinID            string  `json:"coin_id"`
 	Rank              int     `json:"rank"`
 	Symbol            string  `json:"symbol"`
 	Name              string  `json:"name"`
@@ -17,6 +17,7 @@ type CurrencyModel struct {
 	Vwap24Hr          float64 `json:"vwap_24_hr"`
 }
 
+// parse single value
 func (c CurrencyModel) Parse(resp *sql.Rows) CurrencyModel {
 	var mdl CurrencyModel
 	err := resp.Scan(&mdl.ID, &mdl.CoinID, &mdl.Rank, &mdl.Symbol, &mdl.Name, &mdl.Supply, &mdl.MaxSupply, &mdl.MarketCapUSD, &mdl.VolumeUSD24Hr, &mdl.PriceUSD, &mdl.ChangePercent24Hr, &mdl.Vwap24Hr)
@@ -26,6 +27,7 @@ func (c CurrencyModel) Parse(resp *sql.Rows) CurrencyModel {
 	return mdl
 }
 
+// parse all
 func (c CurrencyModel) ParseAll(resp *sql.Rows) []CurrencyModel {
 	var mdls []CurrencyModel
 	for resp.Next() {

@@ -9,6 +9,7 @@ type CurrencyProgressModel struct {
 	Timestamp int
 }
 
+// parse single value
 func (c CurrencyProgressModel) Parse(resp *sql.Rows) CurrencyProgressModel {
 	var cache CurrencyProgressModel
 	err := resp.Scan(&cache.ID, &cache.Currency, &cache.PriceUSD, &cache.Timestamp)
@@ -18,6 +19,7 @@ func (c CurrencyProgressModel) Parse(resp *sql.Rows) CurrencyProgressModel {
 	return cache
 }
 
+// parse all
 func (c CurrencyProgressModel) ParseAll(resp *sql.Rows) []CurrencyProgressModel {
 	var answers []CurrencyProgressModel
 	for resp.Next() {

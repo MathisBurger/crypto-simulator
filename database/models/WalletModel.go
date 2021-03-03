@@ -9,6 +9,7 @@ type WalletModel struct {
 	CurrencyArray string  `json:"currencyArray"`
 }
 
+// parse single value
 func (c WalletModel) Parse(resp *sql.Rows) WalletModel {
 	var cache WalletModel
 	_ = resp.Scan(&cache.ID, &cache.UUID, &cache.BalanceUSD, &cache.CurrencyArray)
