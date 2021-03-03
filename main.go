@@ -26,19 +26,22 @@ func main() {
 
 	app.Use(logger.New())
 	app.Use(cors.New())
-	app.Use(limiter.New(limiter.Config{
-		Next: func(c *fiber.Ctx) bool {
-			return c.IP() == "127.0.0.1"
-		},
-		Max:        20,
-		Expiration: 10 * time.Second,
-		KeyGenerator: func(ctx *fiber.Ctx) string {
-			return ctx.Get("x-forwarded-for")
-		},
-		LimitReached: func(ctx *fiber.Ctx) error {
-			return ctx.SendStatus(fiber.StatusTooManyRequests)
-		},
-	}))
+
+	if os.Getenv("RATE_LIMITER") == "true" {
+		app.Use(limiter.New(limiter.Config{
+			Next: func(c *fiber.Ctx) bool {
+				return c.IP() == "127.0.0.1"
+			},
+			Max:        20,
+			Expiration: 10 * time.Second,
+			KeyGenerator: func(ctx *fiber.Ctx) string {
+				return ctx.Get("x-forwarded-for")
+			},
+			LimitReached: func(ctx *fiber.Ctx) error {
+				return ctx.SendStatus(fiber.StatusTooManyRequests)
+			},
+		}))
+	}
 
 	app.Get("/api", controller.DefaultController)
 	app.Post("/api/register", controller.RegisterController)

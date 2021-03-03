@@ -11,6 +11,7 @@ type defaultResponse struct {
 	RateLimiter string `json:"rate_limiter"`
 }
 
+// returns static response
 func DefaultController(c *fiber.Ctx) error {
 	return c.JSON(defaultResponse{
 		"crypto-service is running...",
