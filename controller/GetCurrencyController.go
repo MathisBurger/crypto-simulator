@@ -13,9 +13,12 @@ type getCurrencyResponse struct {
 }
 
 func GetCurrencyController(c *fiber.Ctx) error {
+
 	username := c.Query("username")
 	token := c.Query("token")
 	name := c.Query("currency")
+
+	// check default values
 	if username == "" || token == "" || name == "" {
 		return c.JSON(getCurrencyResponse{
 			false,
@@ -23,12 +26,15 @@ func GetCurrencyController(c *fiber.Ctx) error {
 			models.CurrencyModel{},
 		})
 	}
+
+	// check login
 	if actions.LoginWithToken(username, token) {
 		return c.JSON(getCurrencyResponse{
 			true,
 			"successfully queried all currencys",
 			actions.GetCurrency(name),
 		})
+
 	} else {
 		return c.JSON(getCurrencyResponse{
 			false,
