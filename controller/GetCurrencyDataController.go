@@ -19,10 +19,13 @@ type getCurrencyDataResponse struct {
 //   It can be enabled via config
 // ---------------------------------
 func GetCurrencyDataController(c *fiber.Ctx) error {
+
 	username := c.Query("username")
 	token := c.Query("token")
 	name := c.Query("currency")
 	timePeriod := c.Query("period")
+
+	// check default values
 	if username == "" || token == "" || name == "" || timePeriod == "" {
 		return c.JSON(getCurrencyDataResponse{
 			false,
@@ -30,8 +33,13 @@ func GetCurrencyDataController(c *fiber.Ctx) error {
 			nil,
 		})
 	}
+
+	// check login
 	if actions.LoginWithToken(username, token) {
+
+		// get int from timePeriod
 		period, err := strconv.Atoi(timePeriod)
+
 		if err != nil {
 			return c.JSON(getCurrencyDataResponse{
 				false,
@@ -39,11 +47,13 @@ func GetCurrencyDataController(c *fiber.Ctx) error {
 				nil,
 			})
 		}
+
 		return c.JSON(getCurrencyDataResponse{
 			true,
 			"successfully queried all currency data",
 			actions.GetCurrencyData(name, period),
 		})
+
 	} else {
 		return c.JSON(getCurrencyDataResponse{
 			false,
