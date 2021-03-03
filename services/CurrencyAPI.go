@@ -27,22 +27,33 @@ type AllCurrencysResponse struct {
 	Timestamp int              `json:"timestamp"`
 }
 
+// queries all currencies from CoinCapAPI v2 [https://api.coincap.io/v2/assets]
 func GetAllCurrencys() (bool, AllCurrencysResponse) {
+
 	url := "https://api.coincap.io/v2/assets"
+
 	httpClient := http.Client{Timeout: time.Second * 2}
+
 	req, _ := http.NewRequest(http.MethodGet, url, nil)
 	res, err := httpClient.Do(req)
+
+	// ignore error
 	if err != nil {
-		panic(err.Error())
 	}
+
+	// close body if available
 	if res.Body != nil {
 		defer res.Body.Close()
 	}
+
+	// parse body
 	body, _ := ioutil.ReadAll(res.Body)
 	obj := AllCurrencysResponse{}
 	err = json.Unmarshal(body, &obj)
+
 	if err != nil {
 		return false, AllCurrencysResponse{}
 	}
+
 	return true, obj
 }
