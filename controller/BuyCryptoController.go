@@ -19,9 +19,10 @@ type buyCryptoResponse struct {
 }
 
 func BuyCryptoController(c *fiber.Ctx) error {
-	raw := string(c.Body())
+
+	// parsing and checking request
 	obj := buyCryptoRequest{}
-	err := json.Unmarshal([]byte(raw), &obj)
+	err := json.Unmarshal(c.Body(), &obj)
 	if err != nil {
 		return c.JSON(buyCryptoResponse{
 			false,
@@ -34,20 +35,33 @@ func BuyCryptoController(c *fiber.Ctx) error {
 			"Invalid JSON body",
 		})
 	}
+
+	// amount must be greater than 0
 	if obj.Amount <= 0 {
 		return c.JSON(sellCryptoResponse{
 			false,
 			"Value must be higher than zero",
 		})
 	}
+
+	// check login
 	if actions.LoginWithToken(obj.Username, obj.Token) {
+
 		currency := actions.GetCurrency(obj.CurrencyID)
+
+		// check if currency exists in database
 		if currency.CoinID == obj.CurrencyID {
+
 			user := actions.GetUserByUsername(obj.Username)
+
+			// check if user has enough money
 			if actions.GetWalletByUUID(user.WalletUUID).BalanceUSD > currency.PriceUSD*obj.Amount {
+
+				// buy crypto
 				actions.AddCryptoToWallet(user.WalletUUID, currency.Symbol, obj.Amount)
 				actions.RemoveMoneyFromWallet(user.WalletUUID, currency.PriceUSD*obj.Amount)
 				actions.AddTrade("USD", currency.Symbol, user.WalletUUID, currency.PriceUSD, obj.Amount)
+
 				return c.JSON(buyCryptoResponse{
 					true,
 					"successfully traded currencys",
@@ -73,6 +87,7 @@ func BuyCryptoController(c *fiber.Ctx) error {
 	}
 }
 
+// checks request
 func checkBuyCryptoRequest(obj buyCryptoRequest) bool {
 	return obj.Username != "" && obj.Token != "" && obj.CurrencyID != ""
 }
