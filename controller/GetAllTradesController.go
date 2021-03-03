@@ -13,8 +13,11 @@ type getAllTradesResponse struct {
 }
 
 func GetAllTradesController(c *fiber.Ctx) error {
+
 	username := c.Query("username")
 	token := c.Query("token")
+
+	// check default values
 	if username == "" || token == "" {
 		return c.JSON(getAllTradesResponse{
 			false,
@@ -22,12 +25,15 @@ func GetAllTradesController(c *fiber.Ctx) error {
 			nil,
 		})
 	}
+
+	// check login
 	if actions.LoginWithToken(username, token) {
 		return c.JSON(getAllTradesResponse{
 			true,
 			"successfully queried all trades from the last 7 days",
 			actions.GetAllTradesForUser(actions.GetUserByUsername(username).WalletUUID),
 		})
+
 	} else {
 		return c.JSON(getAllTradesResponse{
 			false,
