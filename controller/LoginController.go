@@ -19,9 +19,11 @@ type loginResponse struct {
 }
 
 func LoginController(c *fiber.Ctx) error {
-	raw := string(c.Body())
+
+	// parsing and checking request
 	obj := loginRequest{}
-	err := json.Unmarshal([]byte(raw), &obj)
+	err := json.Unmarshal(c.Body(), &obj)
+
 	if err != nil {
 		return c.JSON(loginResponse{
 			false,
@@ -36,14 +38,20 @@ func LoginController(c *fiber.Ctx) error {
 			"None",
 		})
 	}
+
+	// execute login
 	if actions.Login(obj.Username, obj.Password) {
+
+		// generate and set token
 		token := utils.GenerateToken()
 		actions.SetUserAuthToken(obj.Username, token)
+
 		return c.JSON(loginResponse{
 			true,
 			"successfully logged in",
 			token,
 		})
+
 	} else {
 		return c.JSON(loginResponse{
 			false,
@@ -53,6 +61,7 @@ func LoginController(c *fiber.Ctx) error {
 	}
 }
 
+// checks request
 func checkLoginRequest(obj loginRequest) bool {
 	return obj.Username != "" && obj.Password != ""
 }
