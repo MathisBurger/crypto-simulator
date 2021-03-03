@@ -17,10 +17,14 @@ type checkBalanceResponse struct {
 }
 
 func CheckBalanceController(c *fiber.Ctx) error {
+
+	// parse get params to object
 	obj := checkBalanceRequest{
 		c.Query("username", ""),
 		c.Query("auth_token", ""),
 	}
+
+	// check default values
 	if !checkCheckBalanceRequest(obj) {
 		return c.JSON(checkBalanceResponse{
 			false,
@@ -28,8 +32,12 @@ func CheckBalanceController(c *fiber.Ctx) error {
 			0,
 		})
 	}
+
+	// check login
 	if actions.LoginWithToken(obj.Username, obj.AuthToken) {
+
 		UUID := actions.GetUserByUsername(obj.Username).WalletUUID
+
 		return c.JSON(checkBalanceResponse{
 			true,
 			"successfully queried balance",
@@ -44,6 +52,7 @@ func CheckBalanceController(c *fiber.Ctx) error {
 	}
 }
 
+// checks request
 func checkCheckBalanceRequest(obj checkBalanceRequest) bool {
 	return obj.Username != "" && obj.AuthToken != ""
 }
