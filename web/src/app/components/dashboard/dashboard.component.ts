@@ -28,9 +28,12 @@ export class DashboardComponent implements OnInit {
   }
 
   ngOnInit(): void {
+
+    // counter for successful API requests
     let actionCounter = 0;
+
+    // checks token
     this.api.checkTokenStatus().subscribe(data => {
-      console.log(data);
         actionCounter += 1
         if (!data.valid) {
           location.href = '/login';
@@ -38,6 +41,7 @@ export class DashboardComponent implements OnInit {
       this.sendLoadedMessage(actionCounter);
     });
 
+    // queries all currencies
     this.api.getAllCurrencys().subscribe(data => {
       if (data.status) {
         actionCounter += 1
@@ -51,6 +55,7 @@ export class DashboardComponent implements OnInit {
       this.sendLoadedMessage(actionCounter);
     });
 
+    // queries user specific balance
     this.api.getBalance().subscribe(data => {
       if (data.status) {
         actionCounter += 1
@@ -64,6 +69,7 @@ export class DashboardComponent implements OnInit {
       this.sendLoadedMessage(actionCounter);
     });
 
+    // query all trades of user
     this.api.getAllTrades().subscribe(data => {
       if (data.status) {
         actionCounter += 1
@@ -77,6 +83,7 @@ export class DashboardComponent implements OnInit {
       this.sendLoadedMessage(actionCounter);
     });
 
+    // query wallet data of user
     this.api.getWalletForUser().subscribe(data => {
       if (data.status) {
         actionCounter += 1
@@ -91,10 +98,12 @@ export class DashboardComponent implements OnInit {
     })
   }
 
+  // rounds value to decimals
   round(price: number, decimals: number): string {
     return price.toFixed(decimals);
   }
 
+  // adds '+' if value is positive
   parsePositive(num: string): string {
     if (parseFloat(num) > 0) {
       return '+' + num;
@@ -103,6 +112,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // calculates color by number
   colorCalculator(value: string): string {
     if (value.indexOf('+') > -1) {
       return 'color: #00CA0C;';
@@ -111,6 +121,7 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // send successful message if all ngOnInit queries were successful
   sendLoadedMessage(actionCounter: number): void {
     if (actionCounter == 5) {
       this.popup.showAsComponent('successfully loaded data', '#1db004');
@@ -120,10 +131,12 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // redirect to specific currency
   viewCurrency(coinID: string): void {
     location.href = '/currency-view/' + coinID
   }
 
+  // parses unix to date
   parseTime(unix: number): string {
     return new Date(unix * 1000).toLocaleString('en-US');
   }

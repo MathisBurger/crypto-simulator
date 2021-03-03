@@ -25,6 +25,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  // execute on login button click
   login(): void {
     this.api.login(this.username, this.password).subscribe(data => {
       if (data.status) {

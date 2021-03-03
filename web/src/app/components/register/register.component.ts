@@ -26,6 +26,7 @@ export class RegisterComponent implements OnInit {
 
   ngOnInit(): void {}
 
+  // executes on register click
   register(): void {
     this.api.register(this.username, this.password).subscribe(data => {
       if (data.status) {

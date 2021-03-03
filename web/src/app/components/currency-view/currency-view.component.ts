@@ -29,8 +29,13 @@ export class CurrencyViewComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    // counter for successful API requests
     let actionCounter = 0;
+
+    // get currency name
     this.currency = this.route.snapshot.paramMap.get('currency');
+
+    // check token
     this.api.checkTokenStatus().subscribe(data => {
       if (data.status) {
         actionCounter += 1
@@ -45,7 +50,11 @@ export class CurrencyViewComponent implements OnInit {
       }
       this.sendLoadedMessage(actionCounter);
     });
+
+    // updates chart
     this.chartUpdater();
+
+    // queries currency data
     this.api.getCurrency(this.currency).subscribe(data => {
       if (data.status) {
         actionCounter += 1
@@ -60,10 +69,12 @@ export class CurrencyViewComponent implements OnInit {
     });
   }
 
+  // rounds to float special number of decimals
   round(price: number, decimals: number): string {
     return price.toFixed(decimals);
   }
 
+  // adds '+' if value is positive
   parsePositive(num: string): string {
     if (parseFloat(num) > 0) {
       return '+' + num;
@@ -72,6 +83,7 @@ export class CurrencyViewComponent implements OnInit {
     }
   }
 
+  // define text color of change (+ -)
   colorCalculator(value: string): string {
     if (value.indexOf('+') > -1) {
       return 'color: #00CA0C;';
@@ -80,6 +92,7 @@ export class CurrencyViewComponent implements OnInit {
     }
   }
 
+  // check if action-counter is high enough
   sendLoadedMessage(actionCounter: number): void {
     if (actionCounter == 2) {
       this.popup.showAsComponent('successfully loaded data', '#1db004');
@@ -89,6 +102,7 @@ export class CurrencyViewComponent implements OnInit {
     }
   }
 
+  // parses date in dependency to interval length
   parseDate(interval: number, unix: number): string {
       const date = new Date(unix).toLocaleString('en-US').split(', ');
       if (interval <= 86400000) {
@@ -103,6 +117,7 @@ export class CurrencyViewComponent implements OnInit {
       }
   }
 
+  // updates chart with CoinCap API values
   chartUpdater(): void {
     this.api.fetchCurrencyHistory(this.currency, this.time).subscribe(data => {
       let prices: number[] = [];
@@ -155,6 +170,7 @@ export class CurrencyViewComponent implements OnInit {
     });
   }
 
+  // changes interval length of chart (to show)
   changeTimeRange(value: number, nowActive: string): void {
     this.time = value;
     (document.getElementById(this.activeBtn + '-btn') as HTMLDivElement).classList.remove('button-row-element-active');
@@ -163,16 +179,19 @@ export class CurrencyViewComponent implements OnInit {
     this.chartUpdater();
   }
 
+  // opens modal :)
   openModal(): void {
     var modal = document.querySelector('#sellModal') as HTMLDivElement;
     modal.style.display = 'block';
   }
 
+  // closes modal :)
   closeModal(): void {
     var modal = document.querySelector('#sellModal') as HTMLDivElement;
     modal.style.display = 'none';
   }
 
+  // buys amount of currency and handles response
   buyCrypto(amount: string): void {
     this.api.buyCrypto(this.currency, +amount).subscribe(data => {
       if (data.status) {
@@ -190,6 +209,7 @@ export class CurrencyViewComponent implements OnInit {
     })
   }
 
+  // sells amount of currency and handles response
   sellCrypto(amount: string): void {
     this.api.sellCrypto(this.currency, +amount).subscribe(data => {
       if (data.status) {

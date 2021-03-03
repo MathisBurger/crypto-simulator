@@ -24,6 +24,7 @@ const BASE_URL = 'https://crypto.mathis-burger.de/api';
 export class APIService {
   constructor(private client: HttpClient) { }
 
+  // handles bad API response
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       console.error('An error occurred:', error.error.message);
