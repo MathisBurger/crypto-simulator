@@ -12,8 +12,11 @@ type getTokenStatusResponse struct {
 }
 
 func GetTokenStatusController(c *fiber.Ctx) error {
+
 	username := c.Query("username")
 	token := c.Query("token")
+
+	// check default values
 	if username == "" || token == "" {
 		return c.JSON(getTokenStatusResponse{
 			false,
@@ -21,12 +24,15 @@ func GetTokenStatusController(c *fiber.Ctx) error {
 			false,
 		})
 	}
+
+	// check login
 	if actions.LoginWithToken(username, token) {
 		return c.JSON(getTokenStatusResponse{
 			true,
 			"login credentials are valid",
 			true,
 		})
+
 	} else {
 		return c.JSON(getTokenStatusResponse{
 			true,
