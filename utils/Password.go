@@ -6,6 +6,7 @@ import (
 	"math/rand"
 )
 
+// hashes the password
 func HashPassword(pwd string) string {
 	salt := generateSalt()
 	hash := hashPassword(pwd, salt)
@@ -16,6 +17,7 @@ func HashPassword(pwd string) string {
 
 }
 
+// generates salt
 func generateSalt() []byte {
 	var salt = make([]byte, 16)
 	_, err := rand.Read(salt[:])
@@ -25,6 +27,7 @@ func generateSalt() []byte {
 	return salt
 }
 
+// hashes with salt
 func hashPassword(password string, salt []byte) string {
 	var passwordBytes = []byte(password)
 	var sha512Hasher = sha512.New()
@@ -36,6 +39,7 @@ func hashPassword(password string, salt []byte) string {
 	return encodedSalt + "$" + base64EncodedPasswordHash
 }
 
+// checks if passwords are the same
 func DoPasswordsMatch(hashedPassword, currPassword string,
 	salt string) bool {
 	slt, _ := hex.DecodeString(salt)

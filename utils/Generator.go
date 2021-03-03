@@ -6,6 +6,7 @@ import (
 	"time"
 )
 
+// UUID generator
 func GenerateUUID() string {
 	rand.Seed(time.Now().Unix())
 	charSet := "abcdefghijklmnopqrstuvwxyz"
