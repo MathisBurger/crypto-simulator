@@ -24,7 +24,12 @@
 The crypto simulator is an open source simulation game based on an angular web application.
 You can trade with virtual currencies, but with real coin prices. Try it out yourself by 
 creating an account on <a href="https://crypto-simulator.mathis-burger.de">
-the main instance</a>.
+the main instance</a>.<br>
+A service is calling the <a href="https://api.coincap.io/v2/assets">coincap API</a> every 10 seconds, and saves the 
+current prices and more information about the currency into the database.<br>
+If a user wants to buy a specific amount of a currency, the backend checks if the user has got enough money to buy this.
+If is able to buy the currency, an entry with information about the trade, including the current price, is beeing saved
+into the database.
 
 
 # Idea
