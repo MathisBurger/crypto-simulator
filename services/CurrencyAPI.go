@@ -39,6 +39,7 @@ func GetAllCurrencys() (bool, AllCurrencysResponse) {
 
 	// ignore error
 	if err != nil {
+		return false, AllCurrencysResponse{}
 	}
 
 	// close body if available
