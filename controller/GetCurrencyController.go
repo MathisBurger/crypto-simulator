@@ -3,6 +3,7 @@ package controller
 import (
 	"github.com/MathisBurger/crypto-simulator/database/actions"
 	"github.com/MathisBurger/crypto-simulator/database/models"
+	"github.com/MathisBurger/crypto-simulator/middleware"
 	"github.com/gofiber/fiber/v2"
 )
 
@@ -14,12 +15,10 @@ type getCurrencyResponse struct {
 
 func GetCurrencyController(c *fiber.Ctx) error {
 
-	username := c.Query("username")
-	token := c.Query("token")
 	name := c.Query("currency")
 
 	// check default values
-	if username == "" || token == "" || name == "" {
+	if name == "" {
 		return c.JSON(getCurrencyResponse{
 			false,
 			"Invalid JSON body",
@@ -28,7 +27,7 @@ func GetCurrencyController(c *fiber.Ctx) error {
 	}
 
 	// check login
-	if actions.LoginWithToken(username, token) {
+	if status, _ := middleware.ValidateAccessToken(c); status {
 		return c.JSON(getCurrencyResponse{
 			true,
 			"successfully queried all currencys",

@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import {Observable, throwError} from 'rxjs';
 import {DefaultResponse} from '../models/default-response';
-import {HttpClient, HttpErrorResponse, HttpParams} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
-import {LoginResponse} from '../models/login-response';
-import {TokenStatusResponse} from '../models/token-status-response';
-import {CookieService} from './cookie.service';
 import {GetAllCurrencysResponse} from '../models/get-all-currencys-response';
 import {GetBalanceResponse} from '../models/get-balance-response';
 import {CurrencyHistoryResponse} from '../models/currency-history-response';
@@ -14,6 +11,7 @@ import {GetAllTradesResponse} from '../models/get-all-trades-response';
 import {BuyCryptoResponse} from '../models/buy-crypto-response';
 import {SellCryptoResponse} from '../models/sell-crypto-response';
 import {GetWalletsForUserResponse} from '../models/get-wallets-for-user-response';
+import {AccessToken} from '../models/access-token';
 
 //const BASE_URL = 'https://crypto.mathis-burger.de/api';
 
@@ -24,7 +22,10 @@ const BASE_URL = 'http://127.0.0.1:8080/api';
 })
 
 export class APIService {
+
   constructor(private client: HttpClient) { }
+
+  public sessionToken: string;
 
   // handles bad API response
   private handleError(error: HttpErrorResponse) {
@@ -39,7 +40,26 @@ export class APIService {
       'Something bad happened; please try again later.');
   }
 
+  // handles the error of login functions
+  // returns "FAILED" as observable
+  private handleAuthError(error: HttpErrorResponse): Observable<string> {
+    return new Observable<string>(subscriber => {
+      subscriber.next('FAILED');
+      subscriber.complete();
+    });
+  }
 
+  // handles the error if a refresh token is not valid
+  // only allowed for requesting new accessToken
+  private handleAuthTokenError(error: HttpErrorResponse): Observable<string> {
+    return new Observable<string>(subscriber => {
+      subscriber.next('unauthorized');
+      subscriber.complete();
+    })
+  }
+
+  // This functions is used to register a new user
+  // At this point no refresh tokens are needed
   register(username: string, password: string): Observable<DefaultResponse> {
     return this.client.post<DefaultResponse>(
       BASE_URL + '/register',
@@ -50,41 +70,54 @@ export class APIService {
     ).pipe(catchError(this.handleError));
   }
 
-  login(username: string, password: string): Observable<LoginResponse> {
-    return this.client.post<LoginResponse>(
-      BASE_URL + '/login',
+  // logs the user into the game.
+  // sets automatically the send refresh token as cookie
+  login(username: string, password: string): Observable<string>{
+    return this.client.post<any>(
+      BASE_URL + '/auth/login',
       {
         username: username,
         password: password
-      }
-    ).pipe(catchError(this.handleError));
+      },
+      {withCredentials: true, responseType: 'text' as 'json'}
+    ).pipe(catchError(this.handleAuthError));
   }
 
-  checkTokenStatus(): Observable<TokenStatusResponse> {
-    let creds = new CookieService().getLoginCredentials();
-    let params = new HttpParams();
-    params = params.append('username', creds[0]);
-    params = params.append('token', creds[1]);
-    return this.client.get<TokenStatusResponse>(BASE_URL + '/checkTokenStatus', {params: params})
-      .pipe(catchError(this.handleError));
+  // queries the API to generate a short life accessToken
+  // bases on the long life refreshToken
+  getAccessToken(): Observable<any> {
+    return this.client.get<AccessToken>(BASE_URL + '/auth/accessToken', {
+      withCredentials: true
+    }).pipe(catchError(this.handleAuthTokenError));
   }
+
+  // This auth endpoint revokes the current session
+  // and deletes all data about this session in
+  // the database, except trading information
+  revokeSession(): Observable<any> {
+    return this.client.post<any>(BASE_URL + '/auth/revokeSession', {}, {
+      withCredentials: true,
+      headers: new HttpHeaders({'Authorization': 'accessToken ' + this.sessionToken})
+    }).pipe(catchError(this.handleAuthError));
+  }
+
+
+  //////////////////////////////////////////////////
+  // Functions to get values and execute          //
+  // actions on backend                           //
+  //////////////////////////////////////////////////
+
 
   getAllCurrencys(): Observable<GetAllCurrencysResponse> {
-    let creds = new CookieService().getLoginCredentials();
-    let params = new HttpParams();
-    params = params.append('username', creds[0]);
-    params = params.append('token', creds[1]);
-    return this.client.get<GetAllCurrencysResponse>(BASE_URL + '/getAllCurrencys', {params: params})
-      .pipe(catchError(this.handleError));
+    return this.client.get<GetAllCurrencysResponse>(BASE_URL + '/getAllCurrencys', {
+      headers: new HttpHeaders({'Authorization': 'accessToken ' + this.sessionToken})
+    }).pipe(catchError(this.handleError));
   }
 
   getBalance(): Observable<GetBalanceResponse> {
-    let creds = new CookieService().getLoginCredentials();
-    let params = new HttpParams();
-    params = params.append('username', creds[0]);
-    params = params.append('auth_token', creds[1]);
-    return this.client.get<GetBalanceResponse>(BASE_URL + '/checkBalance', {params: params})
-      .pipe(catchError(this.handleError))
+    return this.client.get<GetBalanceResponse>(BASE_URL + '/checkBalance', {
+      headers: new HttpHeaders({'Authorization': 'accessToken ' + this.sessionToken})
+    }).pipe(catchError(this.handleError))
   }
 
   fetchCurrencyHistory(name: string, time: number): Observable<CurrencyHistoryResponse> {
@@ -111,52 +144,37 @@ export class APIService {
   }
 
   getCurrency(name: string): Observable<GetCurrencyResponse> {
-    let creds = new CookieService().getLoginCredentials();
     let params = new HttpParams();
-    params = params.append('username', creds[0]);
-    params = params.append('token', creds[1]);
     params = params.append('currency', name);
-    return this.client.get<GetCurrencyResponse>(BASE_URL + '/getCurrency', {params: params})
+    return this.client.get<GetCurrencyResponse>(BASE_URL + '/getCurrency',
+      {params: params, headers: new HttpHeaders({'Authorization': 'accessToken ' + this.sessionToken})})
       .pipe(catchError(this.handleError));
   }
 
   getAllTrades(): Observable<GetAllTradesResponse> {
-    let creds = new CookieService().getLoginCredentials();
-    let params = new HttpParams();
-    params = params.append('username', creds[0]);
-    params = params.append('token', creds[1]);
-    return this.client.get<GetAllTradesResponse>(BASE_URL + '/getAllTrades', {params: params})
+    return this.client.get<GetAllTradesResponse>(BASE_URL + '/getAllTrades', {headers: new HttpHeaders({'Authorization': 'accessToken ' + this.sessionToken})})
       .pipe(catchError(this.handleError));
   }
 
   buyCrypto(currencyID: string, amount: number): Observable<BuyCryptoResponse> {
-    let creds = new CookieService().getLoginCredentials();
     return this.client.post<BuyCryptoResponse>(BASE_URL + '/buyCrypto',
       {
-        username: creds[0],
-        token: creds[1],
         currency_id: currencyID,
         amount: amount
-      }).pipe(catchError(this.handleError));
+      }, {headers: new HttpHeaders({'Authorization': 'accessToken ' + this.sessionToken})}).pipe(catchError(this.handleError));
   }
 
   sellCrypto(currencyID: string, amount: number): Observable<SellCryptoResponse> {
-    let creds = new CookieService().getLoginCredentials();
     return this.client.post<SellCryptoResponse>(BASE_URL + '/sellCrypto',
       {
-        username: creds[0],
-        token: creds[1],
         currency_id: currencyID,
         amount: amount
-      }).pipe(catchError(this.handleError));
+      }, {headers: new HttpHeaders({'Authorization': 'accessToken ' + this.sessionToken})}).pipe(catchError(this.handleError));
   }
 
   getWalletForUser(): Observable<GetWalletsForUserResponse> {
-    let creds = new CookieService().getLoginCredentials();
-    let params = new HttpParams();
-    params = params.append('username', creds[0]);
-    params = params.append('token', creds[1]);
-    return this.client.get<GetWalletsForUserResponse>(BASE_URL + '/getWalletsForUser', {params: params})
+    return this.client.get<GetWalletsForUserResponse>(BASE_URL + '/getWalletsForUser',
+      {headers: new HttpHeaders({'Authorization': 'accessToken ' + this.sessionToken})})
       .pipe(catchError(this.handleError));
   }
 }

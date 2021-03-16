@@ -3,12 +3,11 @@ package controller
 import (
 	"encoding/json"
 	"github.com/MathisBurger/crypto-simulator/database/actions"
+	"github.com/MathisBurger/crypto-simulator/middleware"
 	"github.com/gofiber/fiber/v2"
 )
 
 type sellCryptoRequest struct {
-	Username   string  `json:"username"`
-	Token      string  `json:"token"`
 	CurrencyID string  `json:"currency_id"`
 	Amount     float64 `json:"amount"`
 }
@@ -45,9 +44,9 @@ func SellCryptoController(c *fiber.Ctx) error {
 	}
 
 	// check login
-	if actions.LoginWithToken(obj.Username, obj.Token) {
+	if status, ident := middleware.ValidateAccessToken(c); status {
 
-		user := actions.GetUserByUsername(obj.Username)
+		user := actions.GetUserByUsername(ident)
 		currency := actions.GetCurrency(obj.CurrencyID)
 
 		// check if user own given number of crypto
@@ -80,5 +79,5 @@ func SellCryptoController(c *fiber.Ctx) error {
 
 // checks request
 func checkSellCryptoRequest(obj sellCryptoRequest) bool {
-	return obj.Username != "" && obj.Token != "" && obj.CurrencyID != ""
+	return obj.CurrencyID != ""
 }

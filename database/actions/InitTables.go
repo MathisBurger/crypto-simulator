@@ -36,6 +36,13 @@ func InitTables() {
 	if err != nil {
 	}
 
+	// create refresh token table
+	stmt, _ = conn.Prepare("CREATE TABLE `refresh-token` ( `ID` INT NOT NULL AUTO_INCREMENT , `username` TEXT NOT NULL , `token` TEXT NOT NULL , `Deadline` DATETIME NOT NULL, PRIMARY KEY (`ID`) );")
+	_, err = stmt.Exec()
+	// ignore already exists error
+	if err != nil {
+	}
+
 	////////////////////////
 	//      DEPRECATED    //
 	////////////////////////

@@ -5,12 +5,14 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// DEPRECATED
 type getTokenStatusResponse struct {
 	Status  bool   `json:"status"`
 	Message string `json:"message"`
 	Valid   bool   `json:"valid"`
 }
 
+// DEPRECATED
 func GetTokenStatusController(c *fiber.Ctx) error {
 
 	username := c.Query("username")

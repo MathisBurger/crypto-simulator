@@ -1,9 +1,11 @@
 package main
 
 import (
+	"github.com/MathisBurger/crypto-simulator/auth"
 	"github.com/MathisBurger/crypto-simulator/controller"
 	"github.com/MathisBurger/crypto-simulator/database/actions"
 	"github.com/MathisBurger/crypto-simulator/services"
+	"github.com/MathisBurger/crypto-simulator/utils"
 	"github.com/gofiber/fiber/v2"
 	"github.com/gofiber/fiber/v2/middleware/cors"
 	"github.com/gofiber/fiber/v2/middleware/limiter"
@@ -20,12 +22,17 @@ func main() {
 	}
 	actions.InitTables()
 
+	utils.GenerateKeys()
+
 	app := fiber.New(fiber.Config{
 		Prefork: false,
 	})
 
 	app.Use(logger.New())
-	app.Use(cors.New())
+	app.Use(cors.New(cors.Config{
+		AllowCredentials: true,
+		ExposeHeaders:    "Authorization",
+	}))
 
 	if os.Getenv("RATE_LIMITER") == "true" {
 		app.Use(limiter.New(limiter.Config{
@@ -43,10 +50,14 @@ func main() {
 		}))
 	}
 
+	// refresh token auth controller
+	app.Post("/api/auth/login", auth.LoginController)
+	app.Get("/api/auth/accessToken", auth.AccessTokenController)
+	app.Post("/api/auth/revokeSession", auth.RevokeSessionController)
+	app.Get("/api/auth/me", auth.StatusController)
+
 	app.Get("/api", controller.DefaultController)
 	app.Post("/api/register", controller.RegisterController)
-	app.Post("/api/login", controller.LoginController)
-	app.Get("/api/checkTokenStatus", controller.GetTokenStatusController)
 	app.Get("/api/checkBalance", controller.CheckBalanceController)
 	app.Get("/api/getAllCurrencys", controller.GetAllCurrencysController)
 	app.Get("/api/getCurrency", controller.GetCurrencyController)
@@ -57,6 +68,8 @@ func main() {
 
 	if os.Getenv("DEPRECATED_ENDPOINTS") == "true" {
 		app.Get("/api/getCurrencyData", controller.GetCurrencyDataController)
+		app.Post("/api/login", controller.LoginController)
+		app.Get("/api/checkTokenStatus", controller.GetTokenStatusController)
 	}
 
 	// Web endpoints

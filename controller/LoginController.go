@@ -1,3 +1,8 @@
+///////////////////////////////////////////////////
+// This file is not longer in use.
+// It can be enabled via config
+///////////////////////////////////////////////////
+
 package controller
 
 import (
@@ -7,17 +12,20 @@ import (
 	"github.com/gofiber/fiber/v2"
 )
 
+// DEPRECATED
 type loginRequest struct {
 	Username string `json:"username"`
 	Password string `json:"password"`
 }
 
+// DEPRECATED
 type loginResponse struct {
 	Status    bool   `json:"status"`
 	Message   string `json:"message"`
 	AuthToken string `json:"auth_token"`
 }
 
+// DEPRECATED
 func LoginController(c *fiber.Ctx) error {
 
 	// parsing and checking request
@@ -62,6 +70,7 @@ func LoginController(c *fiber.Ctx) error {
 }
 
 // checks request
+// DEPRECATED
 func checkLoginRequest(obj loginRequest) bool {
 	return obj.Username != "" && obj.Password != ""
 }

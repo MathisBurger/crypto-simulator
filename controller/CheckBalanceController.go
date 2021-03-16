@@ -2,13 +2,9 @@ package controller
 
 import (
 	"github.com/MathisBurger/crypto-simulator/database/actions"
+	"github.com/MathisBurger/crypto-simulator/middleware"
 	"github.com/gofiber/fiber/v2"
 )
-
-type checkBalanceRequest struct {
-	Username  string `json:"username"`
-	AuthToken string `json:"auth_token"`
-}
 
 type checkBalanceResponse struct {
 	Status  bool    `json:"status"`
@@ -18,25 +14,10 @@ type checkBalanceResponse struct {
 
 func CheckBalanceController(c *fiber.Ctx) error {
 
-	// parse get params to object
-	obj := checkBalanceRequest{
-		c.Query("username", ""),
-		c.Query("auth_token", ""),
-	}
-
-	// check default values
-	if !checkCheckBalanceRequest(obj) {
-		return c.JSON(checkBalanceResponse{
-			false,
-			"Invalid JSON body",
-			0,
-		})
-	}
-
 	// check login
-	if actions.LoginWithToken(obj.Username, obj.AuthToken) {
+	if status, ident := middleware.ValidateAccessToken(c); status {
 
-		UUID := actions.GetUserByUsername(obj.Username).WalletUUID
+		UUID := actions.GetUserByUsername(ident).WalletUUID
 
 		return c.JSON(checkBalanceResponse{
 			true,
@@ -50,9 +31,4 @@ func CheckBalanceController(c *fiber.Ctx) error {
 			0,
 		})
 	}
-}
-
-// checks request
-func checkCheckBalanceRequest(obj checkBalanceRequest) bool {
-	return obj.Username != "" && obj.AuthToken != ""
 }

@@ -13,60 +13,66 @@ import {CurrencyModel} from '../../models/currency-model';
   styleUrls: ['./currency-view.component.css']
 })
 export class CurrencyViewComponent implements OnInit {
+
+  // data for currency-view.component.html
+  // This data is being handled to display
+  // data of the Rest service
   currency: string;
   time = 14400000;
   currModel: CurrencyModel;
   activeBtn: string = '4h';
 
+
   constructor(
+    // implementation of the API-service and the
+    // popup service. It is made for fetching data
+    // and showing status popups
     @Inject('APIService') private api: APIService,
     injector: Injector,
     public popup: AlertWindowService,
     private route: ActivatedRoute
+
   ) {
+
+    // defines the popup element for showing
+    // data in the popup
     const PopupElement = createCustomElement(AlertWindowComponent, {injector});
     customElements.define('popup-element', PopupElement);
   }
 
   ngOnInit(): void {
-    // counter for successful API requests
-    let actionCounter = 0;
+
 
     // get currency name
     this.currency = this.route.snapshot.paramMap.get('currency');
 
-    // check token
-    this.api.checkTokenStatus().subscribe(data => {
-      if (data.status) {
-        actionCounter += 1
-        if (!data.valid) {
-          location.href = '/login';
-        }
-      } else {
-        this.popup.showAsComponent(data.message, '#d41717');
-        setTimeout(() => {
-          this.popup.closePopup();
-        }, 1000);
-      }
-      this.sendLoadedMessage(actionCounter);
-    });
+    // get JWT access token for communication
+    // with the API. It is using an refresh token
+    // auth system.
+    this.api.getAccessToken().subscribe(data => {
 
-    // updates chart
-    this.chartUpdater();
 
-    // queries currency data
-    this.api.getCurrency(this.currency).subscribe(data => {
-      if (data.status) {
-        actionCounter += 1
-        this.currModel = data.data;
+      if (data == 'unauthorized') {
+
+        location.href = '/login';
+
       } else {
-        this.popup.showAsComponent(data.message, '#d41717');
-        setTimeout(() => {
-          this.popup.closePopup();
-        }, 1000);
+
+        // set the current JWT session token
+        this.api.sessionToken = data.token;
+        // updates chart
+        this.chartUpdater();
+
+        // queries currency data
+        this.api.getCurrency(this.currency).subscribe(data => {
+          if (data.status) {
+            this.currModel = data.data;
+          } else {
+            this.ngOnInit();
+          }
+        });
       }
-      this.sendLoadedMessage(actionCounter);
-    });
+    })
   }
 
   // rounds to float special number of decimals

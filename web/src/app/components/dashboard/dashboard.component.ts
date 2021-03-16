@@ -13,88 +13,89 @@ import {CurrencyArrayEntry} from '../../models/currency-array-entry';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent implements OnInit {
+
+  // data for currency-view.component.html
+  // This data is being handled to display
+  // data of the Rest service
   currencys: CurrencyModel[];
   trades: TradeModel[];
   balance: number;
   wallets: CurrencyArrayEntry[];
 
   constructor(
+    // implementation of the API-service and the
+    // popup service. It is made for fetching data
+    // and showing status popups
     @Inject('APIService') private api: APIService,
     injector: Injector,
     public popup: AlertWindowService
   ) {
+    // defines the popup element for showing
+    // data in the popup
     const PopupElement = createCustomElement(AlertWindowComponent, {injector});
     customElements.define('popup-element', PopupElement);
   }
 
   ngOnInit(): void {
 
-    // counter for successful API requests
-    let actionCounter = 0;
+    // get JWT access token for communication
+    // with the API. It is using an refresh token
+    // auth system.
+    this.api.getAccessToken().subscribe(data => {
 
-    // checks token
-    this.api.checkTokenStatus().subscribe(data => {
-        actionCounter += 1
-        if (!data.valid) {
-          location.href = '/login';
-        }
-      this.sendLoadedMessage(actionCounter);
-    });
+      if (data == 'unauthorized') {
 
+        location.href = '/login';
+      } else {
+
+        // set the current JWT session token
+        this.api.sessionToken = data.token;
+
+        // executes data queries
+        // which are containing data
+        // needed in the frontend
+        this.executeQueries();
+      }
+    })
+
+
+  }
+
+  executeQueries() {
     // queries all currencies
     this.api.getAllCurrencys().subscribe(data => {
       if (data.status) {
-        actionCounter += 1
-          this.currencys = data.data;
+        this.currencys = data.data;
       } else {
-        this.popup.showAsComponent(data.message, '#d41717');
-        setTimeout(() => {
-          this.popup.closePopup();
-        }, 1000);
+        this.ngOnInit();
       }
-      this.sendLoadedMessage(actionCounter);
     });
 
     // queries user specific balance
     this.api.getBalance().subscribe(data => {
       if (data.status) {
-        actionCounter += 1
         this.balance = data.balance;
       } else {
-        this.popup.showAsComponent(data.message, '#d41717');
-        setTimeout(() => {
-          this.popup.closePopup();
-        }, 1000);
+        this.ngOnInit();
       }
-      this.sendLoadedMessage(actionCounter);
     });
 
     // query all trades of user
     this.api.getAllTrades().subscribe(data => {
       if (data.status) {
-        actionCounter += 1
         this.trades = data.data.reverse();
       } else {
-        this.popup.showAsComponent(data.message, '#d41717');
-        setTimeout(() => {
-          this.popup.closePopup();
-        }, 1000);
+        this.ngOnInit();
       }
-      this.sendLoadedMessage(actionCounter);
     });
 
     // query wallet data of user
     this.api.getWalletForUser().subscribe(data => {
       if (data.status) {
-        actionCounter += 1
         this.wallets = data.data;
       } else {
-        this.popup.showAsComponent(data.message, '#d41717');
-        setTimeout(() => {
-          this.popup.closePopup();
-        }, 1000);
+        this.ngOnInit();
       }
-      this.sendLoadedMessage(actionCounter);
     })
   }
 
@@ -118,16 +119,6 @@ export class DashboardComponent implements OnInit {
       return 'color: #00CA0C;';
     } else {
       return 'color: #E51F07;';
-    }
-  }
-
-  // send successful message if all ngOnInit queries were successful
-  sendLoadedMessage(actionCounter: number): void {
-    if (actionCounter == 5) {
-      this.popup.showAsComponent('successfully loaded data', '#1db004');
-      setTimeout(() => {
-        this.popup.closePopup();
-      }, 1000);
     }
   }
 
