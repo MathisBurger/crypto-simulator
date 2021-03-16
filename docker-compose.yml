@@ -13,7 +13,7 @@ services:
       - "db"
     links:
       - "db"
-    build: .
+    image: mathisburger/crypto-simulator:latest
     ports:
       - "8080:8080"
     restart: always
