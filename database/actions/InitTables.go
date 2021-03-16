@@ -4,7 +4,7 @@ import "fmt"
 
 func InitTables() {
 
-	conn, err := connect()
+	conn, err := Connect()
 	if err != nil {
 		panic(err.Error())
 	}

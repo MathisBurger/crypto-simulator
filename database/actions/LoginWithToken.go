@@ -2,7 +2,7 @@ package actions
 
 func LoginWithToken(username string, token string) bool {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `user` WHERE `username`=? AND `AuthToken`=?;")

@@ -95,6 +95,9 @@ func main() {
 	// starts the currency updating service as go-routine
 	go services.CurrencyUpdater()
 
+	// starts the refresh token removing service as go routine
+	go services.RefreshTokenRemovingService()
+
 	// starts the http-server
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {

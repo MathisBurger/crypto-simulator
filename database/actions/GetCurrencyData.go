@@ -14,7 +14,7 @@ func GetCurrencyData(name string, timePeriod int) []models.CurrencyProgressModel
 
 	timestamp := time.Now().Unix() - int64(timePeriod)
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `currency-progress` WHERE `currency`=? AND `timestamp`>=?")

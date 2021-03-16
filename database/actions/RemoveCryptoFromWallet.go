@@ -9,7 +9,7 @@ import (
 
 func RemoveCryptoFromWallet(UUID string, symbol string, amount float64) {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `wallets` WHERE `UUID`=?")

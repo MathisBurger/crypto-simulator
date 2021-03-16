@@ -3,7 +3,7 @@ package actions
 import "github.com/MathisBurger/crypto-simulator/database/models"
 
 func GetRefreshToken(token string) (bool, models.RefreshTokenModel) {
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 	stmt, _ := conn.Prepare("SELECT * FROM `refresh-token` WHERE `token`=?")
 	defer stmt.Close()

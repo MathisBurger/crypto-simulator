@@ -8,7 +8,7 @@ import (
 
 func GetCurrencyArray(UUID string) []models.CurrencyArrayModel {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `wallets` WHERE `UUID`=?")

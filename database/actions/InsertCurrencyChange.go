@@ -7,7 +7,7 @@ package actions
 // -----------------------------------------
 func InsertCurrencyChange(currency string, priceUSD float64, timestamp int) {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("INSERT INTO `currency-progress` (`ID`, `currency`, `priceUSD`, `timestamp`) VALUES (NULL, ?, ?, ?);")

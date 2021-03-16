@@ -4,7 +4,7 @@ import "github.com/MathisBurger/crypto-simulator/database/models"
 
 func GetAllCurrencys() []models.CurrencyModel {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `currencys`;")

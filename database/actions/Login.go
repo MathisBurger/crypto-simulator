@@ -8,7 +8,7 @@ import (
 
 func Login(username string, password string) bool {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `user` WHERE `username`=?")

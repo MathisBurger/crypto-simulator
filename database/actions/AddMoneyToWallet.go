@@ -4,7 +4,7 @@ import "github.com/MathisBurger/crypto-simulator/database/models"
 
 func AddMoneyToWallet(UUID string, amount float64) {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `wallets` WHERE `UUID`=?")

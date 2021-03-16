@@ -4,7 +4,7 @@ import "github.com/MathisBurger/crypto-simulator/database/models"
 
 func GetUserByUsername(username string) models.UserModel {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `user` WHERE `username`=?")

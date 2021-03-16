@@ -8,7 +8,7 @@ import (
 
 func GetAmountOfCryptoByUUID(UUID string, symbol string) float64 {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `wallets` WHERE `UUID`=?")

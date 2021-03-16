@@ -7,7 +7,7 @@ import (
 
 func GetAllTradesForUser(UUID string) []models.TradesModel {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `trades` WHERE `walletUUID`=? AND `timestamp`>?")

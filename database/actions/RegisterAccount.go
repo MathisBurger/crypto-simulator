@@ -7,7 +7,7 @@ import (
 )
 
 func RegisterAccount(username string, password string) bool {
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	walletStatus, walletUUID := createWallet(conn)

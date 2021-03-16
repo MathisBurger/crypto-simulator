@@ -1,7 +1,7 @@
 package actions
 
 func CheckUserOwnsRefreshToken(user string, token string) bool {
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 	stmt, _ := conn.Prepare("SELECT * FROM `refresh-token` WHERE `username`=? AND `token`=?")
 	defer stmt.Close()

@@ -2,7 +2,7 @@ package actions
 
 func CheckIfCurrencyExists(name string) bool {
 
-	conn, _ := connect()
+	conn, _ := Connect()
 	defer conn.Close()
 
 	stmt, _ := conn.Prepare("SELECT * FROM `currencys` WHERE `symbol`=?")
