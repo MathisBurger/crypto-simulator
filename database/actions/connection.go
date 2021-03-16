@@ -2,6 +2,7 @@ package actions
 
 import (
 	"database/sql"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 	"os"
 )
@@ -13,13 +14,9 @@ func connect() (*sql.DB, error) {
 	conn, err := sql.Open("mysql", connstr)
 
 	if err != nil {
+		fmt.Println(err.Error())
 		return nil, err
 	}
 
 	return conn, nil
-}
-
-// DEPRECATED
-func disconnect(conn *sql.DB) {
-	defer conn.Close()
 }

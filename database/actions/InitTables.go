@@ -1,5 +1,7 @@
 package actions
 
+import "fmt"
+
 func InitTables() {
 
 	conn, err := connect()
@@ -9,10 +11,14 @@ func InitTables() {
 	defer conn.Close()
 
 	// create user table
-	stmt, _ := conn.Prepare("CREATE TABLE `user` ( `ID` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(64) NOT NULL , `password` TEXT NOT NULL , `walletUUID` VARCHAR(32)NOT NULL , `AuthToken` VARCHAR(128) NOT NULL , `created-at` BIGINT NOT NULL , PRIMARY KEY (`ID`));")
+	stmt, err := conn.Prepare("CREATE TABLE `user` ( `ID` INT NOT NULL AUTO_INCREMENT , `username` VARCHAR(64) NOT NULL , `password` TEXT NOT NULL , `walletUUID` VARCHAR(32)NOT NULL , `AuthToken` VARCHAR(128) NOT NULL , `created-at` BIGINT NOT NULL , PRIMARY KEY (`ID`));")
+	if err != nil {
+		panic(err.Error())
+	}
 	_, err = stmt.Exec()
 	// ignore already exists error
 	if err != nil {
+		fmt.Println(err.Error())
 	}
 
 	// create wallets table

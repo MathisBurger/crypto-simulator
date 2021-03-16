@@ -16,25 +16,36 @@ import (
 )
 
 func main() {
+
 	err := godotenv.Load()
 	if err != nil {
 		panic(err.Error())
 	}
+
+	// initialize the database tables
+	// only if they are not existing
 	actions.InitTables()
 
+	// generates keys for JWT
+	// only if they are not existing
 	utils.GenerateKeys()
 
+	// init fiber app
 	app := fiber.New(fiber.Config{
 		Prefork: false,
 	})
 
+	// initialize logger and cors
 	app.Use(logger.New())
 	app.Use(cors.New(cors.Config{
 		AllowCredentials: true,
 		ExposeHeaders:    "Authorization",
 	}))
 
-	if os.Getenv("RATE_LIMITER") == "true" {
+	// enable rate limiter
+	// if it is enabled in docker-compose
+	// via environment variables
+	if os.Getenv("RATE_LIMITER") == "enabled" {
 		app.Use(limiter.New(limiter.Config{
 			Next: func(c *fiber.Ctx) bool {
 				return c.IP() == "127.0.0.1"
@@ -66,7 +77,9 @@ func main() {
 	app.Get("/api/getAllTrades", controller.GetAllTradesController)
 	app.Get("/api/getWalletsForUser", controller.GetCryptoWalletsForUser)
 
-	if os.Getenv("DEPRECATED_ENDPOINTS") == "true" {
+	// enables all deprecated endpoints
+	// must be specified in the config
+	if os.Getenv("DEPRECATED_ENDPOINTS") == "enabled" {
 		app.Get("/api/getCurrencyData", controller.GetCurrencyDataController)
 		app.Post("/api/login", controller.LoginController)
 		app.Get("/api/checkTokenStatus", controller.GetTokenStatusController)
@@ -79,7 +92,10 @@ func main() {
 	app.Static("/dashboard", "./web/dist/web/index.html")
 	app.Static("/currency-view/*", "./web/dist/web/index.html")
 
+	// starts the currency updating service as go-routine
 	go services.CurrencyUpdater()
+
+	// starts the http-server
 	err = app.Listen(":" + os.Getenv("APPLICATION_PORT"))
 	if err != nil {
 		panic(err.Error())
